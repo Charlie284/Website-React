@@ -57,6 +57,16 @@ describe("Featured work", () => {
     expect(screen.getByRole("status", { name: "Current path" })).toHaveTextContent("/projects/startle");
   });
 
+  it("centers the selected preview after the initial project shuffle", async () => {
+    vi.mocked(Math.random).mockReturnValue(0);
+    const { container } = render(<MemoryRouter><Home /></MemoryRouter>);
+    const selected = container.querySelector<HTMLElement>('.coverflow-card[data-active="true"]')!;
+    await waitFor(() => {
+      expect(selected.style.opacity).toBe("1");
+      expect(selected.style.transform).toBe("none");
+    });
+  });
+
   it("chooses six unique projects, keeps them stable on rerender, and resamples on a new visit", () => {
     const view = render(<MemoryRouter><Home /></MemoryRouter>);
     const selection = () => Array.from(view.container.querySelectorAll(".coverflow-card"), (card) => card.getAttribute("href"));

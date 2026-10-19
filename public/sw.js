@@ -3,6 +3,28 @@ const CACHE_VERSION = "BUILD_CACHE_VERSION";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const PRECACHE_URLS = ["BUILD_PRECACHE_URLS"];
 
+async function matchCache(requests, options) {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    for (const request of requests) {
+      const response = await cache.match(request, options);
+      if (response) return response;
+    }
+  } catch {
+    // Cache Storage is optional; network delivery must survive storage failures.
+  }
+}
+
+async function cacheResponse(request, response) {
+  if (!response.ok) return;
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, response.clone());
+  } catch {
+    // A quota or storage error must not discard a successful network response.
+  }
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)),
@@ -34,12 +56,9 @@ self.addEventListener("fetch", (event) => {
   if (request.mode === "navigate") {
     event.respondWith(
       (async () => {
-        const cache = await caches.open(CACHE_NAME);
         try {
           const response = await fetch(request);
-          if (response.ok) {
-            await cache.put(request, response.clone());
-          }
+          await cacheResponse(request, response);
           return response;
         } catch {
           const pathname = url.pathname === "/"
@@ -49,13 +68,7 @@ self.addEventListener("fetch", (event) => {
             ? [request, "/", "/index.html"]
             : [request, pathname, `${pathname}.html`, `${pathname}/index.html`];
 
-          for (const candidate of candidates) {
-            const response = await cache.match(candidate, { ignoreSearch: true });
-            if (response) return response;
-          }
-
-          return await cache.match("/404.html") ||
-            await cache.match("/") ||
+          return await matchCache([...candidates, "/404.html", "/"], { ignoreSearch: true }) ||
             Response.error();
         }
       })(),
@@ -75,11 +88,10 @@ self.addEventListener("fetch", (event) => {
   if (!isBuildAsset && !["script", "style", "font", "image"].includes(request.destination)) return;
 
   event.respondWith((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const cached = await cache.match(request, { ignoreVary: true });
+    const cached = await matchCache([request], { ignoreVary: true });
     if (cached) return cached;
     const response = await fetch(request);
-    if (response.ok) await cache.put(request, response.clone());
+    await cacheResponse(request, response);
     return response;
   })());
 });

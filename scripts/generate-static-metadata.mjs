@@ -36,26 +36,26 @@ const readFrontmatter = (source) => {
 };
 
 const setTitle = (html, title) =>
-  html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`);
+  html.replace(/<title>[\s\S]*?<\/title>/i, () => `<title>${escapeHtml(title)}</title>`);
 
 const setMeta = (html, attribute, key, value) => {
   const expression = new RegExp(`<meta\\s+[^>]*${attribute}=["']${key}["'][^>]*>`, "i");
   const tag = `<meta ${attribute}="${key}" content="${escapeHtml(value)}">`;
-  return expression.test(html) ? html.replace(expression, tag) : html.replace("</head>", `    ${tag}\n</head>`);
+  return expression.test(html) ? html.replace(expression, () => tag) : html.replace("</head>", () => `    ${tag}\n</head>`);
 };
 
 const setCanonical = (html, url) => {
   const tag = `<link rel="canonical" href="${escapeHtml(url)}">`;
   return /<link\s+[^>]*rel=["']canonical["'][^>]*>/i.test(html)
-    ? html.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*>/i, tag)
-    : html.replace("</head>", `    ${tag}\n</head>`);
+    ? html.replace(/<link\s+[^>]*rel=["']canonical["'][^>]*>/i, () => tag)
+    : html.replace("</head>", () => `    ${tag}\n</head>`);
 };
 
 const addStructuredData = (html, data) => {
   const json = JSON.stringify(data).replaceAll("<", "\\u003c");
   return html.replace(
     "</head>",
-    `    <script id="route-structured-data" type="application/ld+json">${json}</script>\n</head>`,
+    () => `    <script id="route-structured-data" type="application/ld+json">${json}</script>\n</head>`,
   );
 };
 
@@ -108,7 +108,7 @@ const setRenderedContent = (html, content) => {
   if (!root.test(html)) {
     throw new Error("The client HTML template is missing an empty #root element");
   }
-  return html.replace(root, `<div id="root">${content}</div>`);
+  return html.replace(root, () => `<div id="root">${content}</div>`);
 };
 
 const staticRoutes = [

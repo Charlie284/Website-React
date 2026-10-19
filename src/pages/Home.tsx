@@ -389,7 +389,8 @@ function FeaturedWorkSection({
                 const visible = Math.abs(offset) <= 1;
                 return (
                   <MotionLink
-                    key={item.href}
+                    // Reinitialize motion values when the hydration shuffle moves a preview.
+                    key={`${index}:${item.href}`}
                     to={item.href}
                     target={item.external ? "_blank" : undefined}
                     rel={item.external ? "noopener noreferrer" : undefined}

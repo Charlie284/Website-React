@@ -58,10 +58,12 @@ describe("Projects", () => {
       target: { value: "Complete" },
     });
     expect(screen.getByText("Showing 1 of 10")).toBeInTheDocument();
+    // Exiting rows stay mounted during motion; CI can exceed RTL's 1s default.
     await waitFor(() =>
       expect(
         screen.queryByRole("heading", { name: "Personal Website" }),
       ).not.toBeInTheDocument(),
+      { timeout: 5000 },
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));

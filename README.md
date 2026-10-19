@@ -95,6 +95,8 @@ below the homepage hero load lazily. Blog listings ship metadata; article code
 loads when opened, while the build still prerenders complete article HTML.
 
 The service worker precaches the homepage shell and caches other pages and static
-resources when visited. Previously visited pages work offline; unvisited pages
-require a connection. Hashed build assets use immutable caching; public images
-revalidate after one day, and the worker itself is never long-term cached.
+resources when visited. Previously visited pages work offline; an offline HTML
+shell restores routes from cached JavaScript when their page HTML was not cached.
+Unvisited pages require a connection. Hashed build assets use immutable caching;
+public images revalidate after one day, and the worker itself is never long-term
+cached.

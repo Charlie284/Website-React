@@ -7,8 +7,8 @@ Click the **Fork** button on GitHub to create your own copy of the repo.
 
 ## 2. Clone your fork
 ```bash
-git clone https://github.com/<your-username>/Website-React.git
-cd Website-React
+git clone https://github.com/<your-username>/clh.lol-personal-website.git
+cd clh.lol-personal-website
 ```
 
 ## 3. Create a new branch

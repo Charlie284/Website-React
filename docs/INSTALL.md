@@ -6,8 +6,8 @@
 
 ## Clone the repository
 ```bash
-git clone https://github.com/Charlie284/Website-React.git
-cd Website-React
+git clone https://github.com/Charlie284/clh.lol-personal-website.git
+cd clh.lol-personal-website
 ```
 
 ## Install dependencies

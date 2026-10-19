@@ -153,7 +153,7 @@ export default function ThisWebsite() {
                 <a href="https://clh.lol/" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white">
                   Live site <ArrowUpRight size={15} strokeWidth={1.8} />
                 </a>
-                <a href="https://github.com/Charlie284/Website-React" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white">
+                <a href="https://github.com/Charlie284/clh.lol-personal-website" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white">
                   Source <ArrowUpRight size={15} strokeWidth={1.8} />
                 </a>
                 <Link to={projectsReturnTo} className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white">

@@ -1,0 +1,116 @@
+---
+title: "Why Context Window Actually Matters"
+date: "2026-06-24"
+description: "Context window size affects how much code and conversation a coding agent can keep in view. The advertised number matters, but it does not tell the whole story."
+slug: "why-context-window-matters"
+wordCount: 1824
+tags:
+  - ai
+  - development
+  - opinion
+  - llm
+---
+
+Every new model announcement includes a context window number: 128k, 200k, 1M, sometimes more. It is easy to skim past that number or assume that bigger automatically means better.
+
+A larger context window does not make a model smarter. It gives the model more room for your code, instructions, tool output, and the conversation around them. For coding work, that affects how much of the actual problem it can consider at once.
+
+That makes context size one of the first specifications I check on a coding model, alongside the quality of its tools and retrieval.
+
+## What the context window is
+
+A context window is the total amount of text a model can consider in a single forward pass — the prompt plus the response. Everything the model "knows" during a generation has to fit inside that window. Once it's full, the oldest tokens fall off. The model forgets.
+
+Think of it like working memory. You can be the smartest developer alive, but if you can only hold 3 files in your head at once, you're going to make mistakes in a 200-file codebase. You'll forget the types you defined in `types.ts` by the time you're writing the function in `service.ts`. You'll re-invent a utility that already exists in `utils/` because you can't see it. You'll call a function with the wrong arguments because the signature was 15 files ago and it's gone.
+
+This is exactly what happens to coding agents with small context windows.
+
+## 128k: the "should be enough" trap
+
+128k tokens sounds like a lot. It's roughly 100,000 words — about a 300-page book. For a human, that's a lot of reading. For a coding agent, it's **maybe 15-20 source files** with their full content, plus the system prompt, plus the conversation history, plus the tool-call overhead.
+
+Here's what actually fills a 128k window when a coding agent is working:
+
+- **System prompt + instructions:** ~2-4k tokens. The agent's rules, the project conventions, the format it should respond in.
+- **Conversation history:** grows with every turn. If you've been working for 30 minutes, this is 10-20k tokens of "I read this file, I found this, I edited that."
+- **Tool call overhead:** every `read_file`, `grep`, `list_directory` returns text that goes into context. A single `grep` across a medium codebase can return 5-10k tokens of results.
+- **File contents:** the actual code. A typical source file is 1-5k tokens. A large one (a big React component, a data model, a config-heavy file) can be 10k+.
+- **The model's own output:** every response the agent generates counts against the window too.
+
+Add it up and you've got room for maybe 15-20 files before things start falling off. That's a small project. A real codebase — the kind with a `src/` folder that has subfolders — blows through 128k in the first 10 minutes of work.
+
+## What happens when context runs out
+
+When the window fills, the agent doesn't crash. It doesn't warn you. It silently starts dropping the oldest tokens. And this is where things go wrong in ways that are hard to detect:
+
+**1. It re-reads files it already read.** The agent checked `types.ts` 20 turns ago, but that's been pushed out of context. Now it's writing code that uses a type that doesn't exist, or uses the old version of a type you changed 10 minutes ago. You see it hallucinate a field name. It's not hallucinating — it genuinely forgot.
+
+**2. It loses the project conventions.** You told it at the start: "use named exports, no default exports, use Tailwind not CSS modules, errors go in `errors/` not `utils/`." 30 turns later, that instruction is gone. It starts using default exports. It puts a file in the wrong directory. You think it's being lazy or dumb. It's being amnestic.
+
+**3. It can't see the big picture.** The hardest bugs are cross-file: a function in `auth.ts` calls a function in `session.ts` which reads from `db.ts` which is configured by `config.ts`. To understand the bug, the agent needs all four files in context simultaneously. At 128k, it can maybe hold two of them plus the conversation. It fixes the symptom in `session.ts` without seeing that the root cause is in `config.ts`. You go in circles.
+
+**4. It repeats work it already did.** "Didn't you already check this file?" Yes, but it forgot. So it reads it again, spends 5k tokens re-analyzing it, and arrives at the same conclusion. Your context window fills faster, more things fall off, the cycle accelerates. This is the death spiral of long coding sessions on small-context models.
+
+## 1M: the "actually see the codebase" threshold
+
+1M tokens is roughly 750,000 words — about 2,500 pages. In code terms, it's **the entire source of a medium-to-large project**: hundreds of files, all the dependencies' type definitions, the conversation history, and room to spare.
+
+Here's what changes at 1M:
+
+**The agent can hold the whole codebase.** Not 15 files. All of them. It can see that `auth.ts` calls `session.ts` calls `db.ts` calls `config.ts` — all at once, in the same forward pass. Cross-file bugs become solvable because the entire dependency chain is visible.
+
+**It remembers your instructions for the whole session.** The system prompt from turn 1 is still there at turn 50. The conventions hold. The file structure is consistent. The agent doesn't drift.
+
+**It can do repo-level tasks.** "Refactor all the API calls to use the new client" is impossible at 128k — you can't see all the API calls at once. At 1M, you can load every file that imports the old client, see all the call sites, and generate a coherent refactor in one pass. This is the difference between "an assistant that helps you write code" and "an assistant that helps you maintain a codebase."
+
+**It stops the death spiral.** The agent doesn't need to re-read files it already read because they're still in context. It doesn't burn tokens re-deriving conclusions it already reached. The session stays efficient for hours instead of degrading after 20 minutes.
+
+## Giant repos: where even 1M isn't enough
+
+Even a 1M-token window is not enough to hold a large monorepo.
+
+A large monorepo — the kind Google, Meta, or a company with 50+ microservices has — is tens of millions of lines. Even just the type definitions and API surfaces (not the implementations) can be several million tokens. No current model can hold that.
+
+This is where coding agents need **retrieval**, not just raw context. The model needs to be able to search the codebase — grep, symbol lookup, dependency graph traversal — and pull in only the relevant slices. The context window determines how many slices it can hold simultaneously. A 1M window lets it hold a lot. A 128k window lets it hold a few.
+
+The architecture that actually works for giant repos:
+
+1. **Index the codebase** — embeddings, symbol tables, dependency graphs. Pre-process so the agent can search fast.
+2. **Retrieve on demand** — when the agent needs to understand a function, it searches and pulls in the relevant files, not the whole repo.
+3. **Hold as much as possible** — bigger context window = more retrieved slices can stay resident = fewer re-fetches = fewer hallucinations.
+
+Context window is the upper bound on how much retrieved context can be useful at once. Double the window and you roughly double the number of files the agent can reason about simultaneously. For a monorepo, that's the difference between "can fix a bug in one service" and "can understand how two services interact."
+
+## Why short context ruins coding agents specifically
+
+Coding is uniquely punishing for small context windows. Here's why:
+
+**Code is dense.** A single line of TypeScript can encode a type relationship that takes a paragraph to describe in English. A 50-line function might have 20 implicit dependencies — types, imports, side effects, call-site expectations. The token cost of "understanding" code is higher per-line than prose.
+
+**Code is interconnected.** A blog post is self-contained. A source file is not — it imports, it exports, it implements interfaces, it satisfies contracts defined elsewhere. You can't understand a file in isolation. The context window has to hold the file AND its neighborhood.
+
+**Code changes over a session.** A coding session isn't "read 20 files and answer a question." It's "read 5 files, edit 2, read 3 more, edit 1, realize the first edit broke something, re-read the original, fix it." The conversation accumulates. Context fills. And the thing you need to reference is always the thing that just fell off.
+
+**Bugs are spatial.** The cause of a bug is rarely in the same file as the symptom. In a 128k window, you can see the symptom OR the cause, not both. The agent ping-pongs between files, holding one at a time, never seeing the full picture. This is why small-context agents suggest fixes that don't work — they're fixing what they can see, not what's actually wrong.
+
+## What I would pay attention to
+
+If you're choosing a model for a coding agent, here's how to think about context window:
+
+| Window size | What it's good for | Where it breaks |
+| --- | --- | --- |
+| 8k-32k | Single-file edits, quick scripts, explanations | Anything multi-file. Basically useless for real codebases. |
+| 128k-200k | Small projects (10-20 files), focused tasks in larger repos | Long sessions, cross-file refactors, repo-level understanding |
+| 1M+ | Medium-to-large projects, long sessions, repo-level tasks | Monorepos, very large codebases, whole-org understanding |
+
+**For real coding work, 128k is the floor, not the ceiling.** If you're doing anything beyond "write me a function," you need at least 128k. If you're maintaining a project over multiple sessions, doing refactors, or debugging cross-file issues, 1M is the point where the agent stops feeling like it has memory loss.
+
+The advertised token count is not the same as the number of useful files a model can reason about. Instructions, conversation history, tool output, and the model's response all take space. The practical question is how much relevant code remains after all of that is included.
+
+## The number still matters
+
+Context window size helps determine whether a coding agent can keep enough of your project in view to do useful work. It is not the only factor, but it matters more on a repository than it does in a one-off chat.
+
+A strong model with a small window can still struggle when the relevant types, call sites, and earlier decisions no longer fit together. A larger window gives it a better chance of seeing those connections, especially when retrieval is also good.
+
+When a new model comes out, I want to know whether it can keep enough of my project and the current session in view for the work I am asking it to do. The raw token count is a useful starting point, not the answer by itself.

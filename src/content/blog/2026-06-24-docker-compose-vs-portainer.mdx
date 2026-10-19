@@ -1,0 +1,56 @@
+---
+title: "Docker Compose vs Portainer"
+date: "2026-06-24"
+description: "I keep permanent services in Docker Compose and use Portainer to inspect and manage what is running. Each solves a different part of my homelab workflow."
+slug: "docker-compose-vs-portainer"
+wordCount: 548
+tags:
+  - docker
+  - self-hosting
+  - infrastructure
+  - homelab
+---
+
+Self-hosting forums often frame Docker Compose and Portainer as competing choices. I run both on the same server because I use them for different jobs.
+
+## Where Compose earns its place
+
+Docker Compose is a **declarative file**. You write `docker-compose.yml`, you run `docker compose up -d`, and your stack exists. The file lives in a folder, gets committed to git, and documents exactly what's running.
+
+The main benefit is **version control**. When I break something — and I break things often — I can `git diff` the compose file and see exactly which image tag or port mapping I changed. Rollback is `git checkout` + `docker compose up -d` again. No clicking through a UI trying to remember what you toggled.
+
+Compose is slower for one-off experiments. Writing a YAML file feels heavy when I only want to poke at an image for 10 minutes.
+
+## Where Portainer helps
+
+Portainer is a **live dashboard**. You open a browser, click "Containers," and see everything running across every endpoint. Logs, stats, exec shells — all one click away.
+
+Portainer is useful for **observability and quick action**. When a container is OOM-killing at 3am, I don't want to SSH in and `docker logs --tail 200`. I want to open Portainer on my phone, see the restart count, read the last 50 log lines, and restart it. That's worth the overhead alone.
+
+The tradeoff is **state drift**. Changes made in Portainer do not write back to a file. Six months later, I can end up staring at a strange volume mount with no git history explaining why it exists.
+
+## How I actually use both
+
+Here's the split that works for me after a year of running a homelab:
+
+| Need | Tool |
+| --- | --- |
+| Permanent services (media server, dashboards, reverse proxy) | Docker Compose, committed to git |
+| Quick test containers, one-off experiments | Portainer, deleted when done |
+| Checking logs / stats at a glance | Portainer |
+| Recreating a stack after a reinstall | Docker Compose (one command) |
+| Debugging a failing container interactively | Portainer (exec shell in browser) |
+
+The rule I follow: **if it needs to survive a server wipe, it goes in a compose file. If it's temporary, Portainer is fine.**
+
+## The mistake I keep seeing
+
+The trap is using Portainer as your *only* interface to Docker. It works until you need to migrate, rebuild, or remember why something is configured the way it is. I've been there — you click around a UI for an hour trying to reverse-engineer your own decisions from six months ago.
+
+The other trap is refusing to touch Portainer because "real sysadmins use the CLI." That's ego, not engineering. The CLI is better for declaring state. A browser is better for reading logs at 3am. Use the right tool for the moment.
+
+## My rule of thumb
+
+My permanent services live in committed compose files. I use Portainer to inspect and manage the live environment without treating its UI as the source of truth.
+
+If you're just starting out: learn Compose first. You can always add Portainer later. The reverse — trying to reconstruct compose files from a Portainer setup you've been clicking through for months — is painful.

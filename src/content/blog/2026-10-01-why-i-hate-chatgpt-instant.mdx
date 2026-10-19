@@ -1,0 +1,89 @@
+---
+title: "Why I hate ChatGPT Instant"
+date: "2026-10-01"
+description: "Instant answers lose their appeal when I have to do the checking. Opus 5.5's always-on adaptive thinking points toward the kind of AI I actually want."
+slug: "why-i-hate-chatgpt-instant"
+wordCount: 1481
+tags:
+  - ai
+  - chatgpt
+  - claude
+  - reasoning
+  - opinion
+---
+
+I hate ChatGPT's Instant mode. The selling point is obvious. You ask a question and the answer starts appearing almost immediately. That feels good until you have to check whether the answer is actually right.
+
+I want an assistant that spends some effort on the question before handing the work back to me. For complicated tasks, I would rather wait for a useful answer than get an immediate answer that needs another prompt, another correction, and another round of checking.
+
+That is why I think models without a thinking mode are going to become a thing of the past for general-purpose assistants. There will still be narrow jobs where they make sense. But the direction I want to see is a model that can reason, with control over how much effort it spends.
+
+Anthropic's decision to remove the non-thinking option from Opus 5.5 is a good example of that direction.
+
+## Instant makes me choose too early
+
+As of October 1, OpenAI's [ChatGPT documentation](https://help.openai.com/en/articles/20001354-gpt-56-and-gpt-6-pro-in-chatgpt) says GPT-5.6 Sol powers both Instant and the thinking levels on eligible paid plans. On Plus and Pro, Instant does not automatically move to a higher thinking level when a request gets complicated. Even asking it to think harder does not change the selected level. Safety-related switching is an exception, and managed workspaces have separate rules.
+
+So this is partly a complaint about how the product exposes the model. The same model family can do more deliberate work, but I have to decide in advance when to ask for it.
+
+The problem is that I do not always know how difficult a question is before I ask it. A short question about an error message can require understanding several files. A request to shorten a paragraph can involve preserving a qualification that changes the entire argument. Sometimes I am asking because I do not understand the problem well enough to know how hard it is.
+
+The assistant should help with that judgment. If I have to decide how much reasoning it needs before it has even looked at the problem, I am doing part of its job for it.
+
+When I say "thinking," I mean the additional reasoning process these products expose, rather than consciousness or a claim that other models do no computation. A model can produce a correct answer without a separate thinking stage. My objection is to making that the mode I have to remember to escape when the task needs more work.
+
+## The first answer is a bad place to stop the timer
+
+Imagine asking an assistant why a login flow is broken. It immediately suggests clearing the browser cache. That is a plausible answer. It is also useless if the real problem is an expired session being accepted by one part of the application and rejected by another.
+
+Now you have to explain that clearing the cache did not work. Then you provide more context, challenge the next guess, and eventually get to the code that should have been inspected in the first place. The first response was fast. The task was slow.
+
+That is what bothers me about treating response speed as the main measure of usefulness. The time spent reading, correcting, and testing the answer belongs in the calculation too. If the model saves a few seconds and creates several minutes of extra work, I lost time.
+
+Reasoning gives a model room to work through intermediate steps before presenting its answer. [Anthropic describes](https://platform.claude.com/docs/en/build-with-claude/thinking) that process as trying approaches, checking results, and abandoning paths that do not hold up. That is useful for a problem where the first plausible explanation may be wrong.
+
+It still has to inspect the relevant evidence. Thinking longer about an imaginary API will not make that API exist. I want the extra effort spent on checking the premise, identifying missing information, or deciding which tool would answer the question. A longer explanation of the same bad guess does nothing for me.
+
+## Opus 5.5 makes the choice I prefer
+
+Opus 5.5 [does not support turning thinking off](https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5). Adaptive thinking is always enabled. In the API, explicitly disabling it returns an error. You adjust effort instead, and the default is medium.
+
+I like that. It makes reasoning part of the model's normal operation while still giving developers a way to manage the amount of work. The question becomes how much effort the task deserves.
+
+There is an important limit to the phrase "always on." Adaptive thinking does not promise a long reasoning phase for every trivial request. Anthropic's [effort documentation](https://platform.claude.com/docs/en/build-with-claude/effort) says lower settings can skip thinking on simpler problems. The model keeps the adaptive capability; the caller cannot disable it altogether on Opus 5.5.
+
+That is much closer to what I want. A simple request should stay simple. A harder one should have room for more work without requiring the user to have diagnosed its complexity first.
+
+This also does not mean every answer needs to be an essay. The amount of internal work and the amount of text I have to read are different things. A model can check a difficult detail and return two sentences. That would be an improvement over immediately producing six paragraphs that miss the point.
+
+## I still do not want every task overthought
+
+I have already written about [why I hate Opus 5](/blog/why-i-hate-opus-5), including how it can turn a small task into a much larger project. Giving a model more room to reason does not excuse that behavior.
+
+If I ask for a button color to change, the useful work is understanding which button I mean, making the change, and checking it. Redesigning the component system is outside the request. A model that thinks carefully should be better at recognizing that boundary.
+
+There is also a real case for speed. Waiting through a long pause for a spelling correction would be ridiculous. For high-volume applications, the cost of additional reasoning matters, even when the user never sees it. Anthropic's [migration guide](https://platform.claude.com/docs/en/models/opus-5-5/migration-guide) explicitly warns that thinking tokens count toward output limits and are billed even when their text is hidden.
+
+Those are reasons to use less effort when it is enough. They are also reasons to test the actual workload. An always-enabled reasoning mode is a design choice I agree with, not proof that Opus 5.5 wins every comparison or that every non-thinking model is useless.
+
+I care about the result. Did the model understand the request? Did it check the detail that could make the answer wrong? Did it stop when the work was done? Spending more tokens only helps if it improves those things.
+
+## Faster thinking is the alternative I want
+
+This is where Fast mode and Ultrafast become interesting. I want the model to do useful reasoning faster. Making the first response appear sooner is a lot more convincing when it does not require turning that capability off.
+
+OpenAI's [Fast mode](https://help.openai.com/en/articles/11647665-fast-mode-faq) is a processing tier with premium pricing. Its newer [Ultrafast tier](https://developers.openai.com/api/docs/guides/ultrafast-mode) advertises up to eight times Standard speed and is broadly available for GPT-6 Astra in the API at low rate limits. These are speed settings, separate from how much reasoning effort a request gets. Faster processing does not mean selecting Instant.
+
+ChatGPT's [Pro plan documentation](https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers) also lists Astra Ultrafast on Pro 500. As of October 1, that is the $500 plan; it is not included with Pro 100 or Pro 200. So I am not pretending everyone can replace Instant with it today, or that the extra speed is free.
+
+But it makes the direction clearer. If faster inference can reduce the waiting while keeping reasoning available, that is the improvement I want. An advertised speed multiplier still does not guarantee that an entire task finishes that much faster. Tool calls, network delays, and the amount of work matter. I would judge it by whether I get a checked, useful answer sooner.
+
+## Why I think non-thinking assistants will fade
+
+The strongest argument for a non-thinking assistant is that it is fast and cheap. If models can do a small amount of useful reasoning quickly, that advantage becomes harder to defend for an assistant expected to handle whatever the user asks next.
+
+That is my prediction, not something one release proves. Specialized models may keep doing classification, extraction, and other tightly defined work without a separate reasoning stage. A general assistant has a harder job because it has to recognize when the question has stopped being simple.
+
+I expect effort controls and better judgment about when to use them to matter more than a permanent choice between instant answers and thinking. Opus 5.5's design gives me a concrete reason to think that direction is possible, even though the latency, cost, and quality still need to hold up in use.
+
+I do not need the answer to start appearing the moment I finish typing. I need it to be worth reading when it arrives.

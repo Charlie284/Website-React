@@ -1,0 +1,125 @@
+---
+title: "Why Every Developer Eventually Builds a Personal Website"
+date: "2026-07-16"
+description: "A personal website looks like a small React project. Then typography, motion, accessibility, and your own unnecessary ideas turn it into a lesson about building for real people."
+slug: "why-every-developer-builds-a-personal-website"
+wordCount: 1544
+tags:
+  - development
+  - react
+  - design
+  - accessibility
+  - opinion
+---
+
+Every developer eventually builds a personal website.
+
+Sometimes it starts as a portfolio for job applications. Sometimes it is a place to put projects that do not fit in a README. Sometimes the developer just learned React and needs an excuse to use every animation library on npm at once.
+
+Mine became all three.
+
+I wanted a place that was actually mine: my domain, my projects, my writing, and my design decisions. No profile template deciding what mattered. No social platform turning everything into the same card. If I wanted a giant animated name, a command palette, a custom cursor, and a blog stored beside the source code, I could build exactly that.
+
+That freedom is why personal websites are so appealing. It is also why they become complicated so quickly.
+
+What looks like a tiny frontend project turns into a concentrated lesson in React architecture, typography, animation, responsive design, accessibility, performance, and restraint. A personal website has no product manager telling you to stop. That means you eventually have to learn how to tell yourself.
+
+## React is not the interesting part
+
+My site is built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, and MDX. That sounds like the important part when you list it on a project page. In practice, React is just the machinery that lets the rest of the decisions exist.
+
+The first version of a portfolio is easy. Make a home page. Put projects in an array. Map them into cards. Add a navigation bar. Deploy it.
+
+Then the real questions start:
+
+- Where should route metadata live?
+- How do page transitions behave when someone navigates quickly?
+- Should blog posts be data, components, or files?
+- Which visual effects belong in shared components?
+- What happens on a phone with no hover state?
+- What happens when JavaScript loads slowly?
+- What happens when the user prefers reduced motion?
+
+React did not answer any of those questions. It only made it easy to create enough components that I had to answer them.
+
+The best architectural decision I made was treating the site like a small system instead of a pile of pages. Shared layout code owns navigation and page structure. Route metadata is handled consistently. Blog posts live as local MDX, so the writing stays version-controlled with the code. Routes are split so a visitor does not need the entire site before seeing one page.
+
+None of this is groundbreaking. That is the lesson. Good frontend architecture is mostly putting boring responsibilities in predictable places so the interesting pages do not become unmaintainable.
+
+## Typography does more work than components
+
+I used to think visual design meant adding more things: gradients, cards, glowing borders, background effects, and animation. Building this site taught me that typography controls the experience before any of those details matter.
+
+A heading is not just text with a large `font-size`. Its typeface, weight, line height, width, letter spacing, casing, and relationship to the next element decide how the entire page feels. The oversized editorial headings on my site create more identity than the custom cursor or the background dots ever could.
+
+Typography also punishes sloppy responsive design. A title that looks dramatic on a desktop can become four ugly lines on a phone. Tight line height can look intentional at 120 pixels and unreadable at 38. Wide tracking that works for a small label looks absurd in body text.
+
+I ended up relying heavily on fluid sizing with `clamp()`, carefully limited content widths, and separate text roles:
+
+- Large serif display type for personality
+- Small uppercase labels for structure
+- Quiet, readable body text for everything that needs attention longer than five seconds
+- Muted text for hierarchy, not decoration
+
+The surprising part is how often the correct design fix was deleting a container and improving the text. Developers reach for another component because components feel like progress. Sometimes the page only needs a stronger heading and more space around it.
+
+## Motion should explain, not interrupt
+
+Framer Motion makes it dangerously easy to animate everything. I know because I tried.
+
+My site has letter reveals, page entrances, hover movement, magnetic buttons, card interactions, and a hero that responds to the pointer. Those effects are fun to build. They also taught me that motion has a budget.
+
+Every animation asks the visitor to spend attention. If the navigation moves, the background reacts, the heading flies in, the cards rise, and the cursor becomes its own visual object, none of those effects feels special. The page becomes a room where everyone is talking.
+
+The useful motion on the site does one of three things:
+
+1. It establishes hierarchy by revealing the main content first.
+2. It confirms interaction when a link or card responds to the pointer.
+3. It maintains continuity when moving between states or pages.
+
+Anything outside those jobs has to justify itself as personality. Some of it still does. A personal website should not feel like enterprise software. But personality works better when the surrounding interface is calm.
+
+Motion also forced me to think about input methods. Hover effects do not exist on a touchscreen. Pointer tracking that feels smooth with a mouse can feel broken on a coarse input device. Spring animations that look great on a fast laptop can stutter on weaker hardware. The design cannot assume every visitor is using the machine I used to build it.
+
+## Accessibility is a design constraint, not a final check
+
+The easiest way to make an inaccessible site is to build the entire visual experience first and promise to fix accessibility later. By then, the assumptions are everywhere.
+
+Animation is the clearest example. Some people explicitly ask their operating system to reduce motion. Respecting `prefers-reduced-motion` is not just turning off one transition in CSS. It means every custom React animation needs a sensible static state. The page should arrive complete, not look like a frozen animation waiting to start.
+
+Keyboard access creates the same pressure. A command palette is only useful if focus moves into it, the options can be reached without a mouse, Escape closes it, and focus returns somewhere sensible. A clickable card should use a real link rather than a `div` with an `onClick`. Native elements already solve problems that custom components quietly reintroduce.
+
+Then there are the less exciting details:
+
+- Text needs enough contrast against the dark background.
+- Images need useful alternative text.
+- Heading levels need to describe the page instead of matching a desired font size.
+- Focus states need to remain visible.
+- Touch targets need enough space.
+- Content needs to stay usable at zoomed text sizes and narrow widths.
+
+I do not think a site becomes “accessible” because it passes one automated scan. Accessibility is a collection of decisions, and automated tools only see some of them. The personal website taught me to make those decisions while designing components, because retrofitting them is harder and usually worse.
+
+## The unnecessary complexity was still useful
+
+If the goal were only to publish my name, projects, and contact information, this site could be static HTML and a small CSS file. It does not objectively need React. It definitely does not need multiple pointer effects or a command palette.
+
+That makes some of the complexity unnecessary. It does not make it worthless.
+
+A personal website is one of the few projects where overengineering can be educational without hurting a customer. I could experiment with route-level code splitting, animation springs, MDX compilation, responsive typography, and keyboard navigation because I was both the developer and the person accepting the maintenance cost.
+
+The danger is confusing educational complexity with good product design. “I learned something by building this” and “visitors benefit from this” are different claims. Some features earned their place. Some were removed. Others remain because the site is personal and I like them.
+
+The important skill was not learning how to add complexity. Developers get plenty of practice doing that. It was learning to look at something I spent hours building and ask whether the page would be better without it.
+
+## Why every developer should build one anyway
+
+A GitHub profile shows repositories. A résumé shows selected outcomes. A social profile shows whatever its platform is designed to reward. A personal website can connect all of it and explain why the work exists.
+
+More importantly, it forces you to finish the parts of web development tutorials skip. You have to choose a domain, write the copy, handle metadata, make the phone layout work, optimize images, consider accessibility, deploy updates, and live with your old design decisions. There is no fake product brief to hide behind. Every empty section exists because you have not decided what to say.
+
+My website taught me more about frontend work than another isolated React demo would have because it had to represent me to real visitors. The code mattered, but so did the type, the pacing, the words, and everything I chose not to ship.
+
+That is why developers keep building personal websites even when a profile page would be easier. The website is not only a container for the work.
+
+It becomes part of the work.

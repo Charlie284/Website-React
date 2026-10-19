@@ -1,0 +1,126 @@
+---
+title: "Why I Used Rust to Calculate Pi"
+date: "2026-07-16"
+description: "Pi Calc started as a simple Rust project and became a practical lesson in performance, arbitrary-precision arithmetic, and choosing an algorithm that makes the language matter."
+slug: "why-i-used-rust-to-calculate-pi"
+wordCount: 1461
+tags:
+  - rust
+  - development
+  - performance
+  - mathematics
+  - projects
+---
+
+Calculating pi is useless in exactly the right way.
+
+Every programming language can print `3.14159`. Most can calculate a few more digits without much effort. Nobody needs another command-line program that produces a number already computed to trillions of digits.
+
+That is what made it a good project.
+
+There was no product scope to distract me. The goal was brutally simple: ask for a number of digits, calculate them correctly, and make it fast. Once the output is fixed, every interesting decision moves underneath it—number representation, algorithm choice, memory, precision, dependencies, and performance.
+
+I built [Pi Calc](https://github.com/Charlie284/pi-calc) in Rust because I wanted to learn the language through a problem where Rust's strengths would be visible. Not another to-do API. Not a syntax tour. A small program where the difference between a naive solution and a careful one could be measured in actual time.
+
+## Normal numbers stop working almost immediately
+
+The first problem is that built-in numeric types cannot hold arbitrary digits of pi.
+
+An `f64` gives roughly 15 to 17 significant decimal digits. That is excellent for normal engineering and completely useless when the user asks for 100,000 digits. It does not matter how fast the CPU is. The type itself cannot represent the answer.
+
+So Pi Calc uses the Rust [`rug`](https://docs.rs/rug/) crate, a high-level interface to GNU's arbitrary-precision libraries. Its `Integer` type is backed by GMP, while its `Float` type uses MPFR. These numbers grow to the precision the program requests instead of stopping at 64 bits.
+
+“Arbitrary precision” does not mean infinite precision. It means I choose the limit.
+
+The program accepts a number of decimal digits, converts that target to bits, and adds 64 guard bits:
+
+```rust
+let precision = (digits as f64 * (10.0_f64.log2())).ceil() as u32 + 64;
+```
+
+The conversion matters because binary floating-point libraries measure precision in bits, while a human asks for decimal digits. One decimal digit costs about `log2(10)`, or 3.322 bits. The guard bits give intermediate calculations room to round without corrupting the requested end of the result.
+
+This was the first real lesson from the project: precision is a resource. More precision uses more memory and makes every arithmetic operation more expensive. The correct question is not “can this number be exact?” It is “how much precision does this calculation need, and where can error enter?”
+
+## The algorithm matters more than the language
+
+You can calculate pi with methods that are wonderfully easy to understand and painfully slow to run. The Gregory–Leibniz series is the classic example:
+
+```text
+pi = 4 × (1 - 1/3 + 1/5 - 1/7 + ...)
+```
+
+It is beautiful. It is also terrible for this job. The series converges so slowly that getting serious precision would take an absurd number of terms. Rewriting it in Rust would make the loop faster, but it would not rescue the algorithm.
+
+Pi Calc uses the Chudnovsky algorithm. Each term adds roughly 14.18 decimal digits, so the amount of useful precision grows quickly. For 100,000 digits, the program needs a little over 7,000 iterations instead of waiting on a series that barely moves.
+
+The important lesson is one developers repeatedly learn the hard way: a faster language cannot compensate for the wrong algorithm. Changing Python to Rust might produce a useful constant-factor improvement. Changing the mathematical method can remove entire orders of magnitude of work.
+
+Rust became valuable after the algorithm was right.
+
+## Do not calculate the same factorials again
+
+The Chudnovsky formula contains large factorials and powers. A literal implementation could calculate `(6k)!`, `(3k)!`, and `(k!)³` from scratch on every iteration. That would be correct and wasteful.
+
+My implementation advances the terms using recurrences. It keeps three large values:
+
+- `a`, the factorial ratio
+- `b`, the linear part of the numerator
+- `t`, the large signed power in the denominator
+
+Each iteration updates the previous values. `b` increases by a constant. `t` multiplies by a constant. `a` uses only the new factors introduced by the next value of `k`. The program reuses the work it already performed rather than rebuilding enormous factorials from one.
+
+This is not the final word in pi performance. Truly enormous calculations usually use binary splitting and much more sophisticated memory and multiplication strategies. Pi Calc's current implementation is a straightforward iterative recurrence. That is enough to expose the important ideas while keeping the entire calculator readable in one source file.
+
+That balance mattered to me. A benchmark is not very educational if the optimization makes the program impossible to understand.
+
+## Rust made costs visible
+
+Rust has a reputation for making simple programs feel difficult. That reputation is not completely unfair. The compiler forces decisions that Python lets you postpone: who owns this value, whether an operation moves it, when a reference is enough, and which conversions are explicit.
+
+Those questions become concrete with arbitrary-precision numbers. A giant integer is not a cheap primitive that can be copied without thought. Multiplication may allocate. Cloning may copy a large value. Converting an integer into a high-precision float is real work. The type signatures make those costs harder to ignore.
+
+The `rug` operations also gave me a practical reason to learn borrowing instead of treating ownership as an abstract chapter in a book. Expressions such as multiplying references to `a` and `b` let the library operate without giving up ownership of the values needed in the next iteration.
+
+Rust did not magically make the math fast. GMP and MPFR do much of the heavy arithmetic. Rust gave me a disciplined way to assemble those operations into a native command-line program with explicit types, predictable control flow, and no garbage collector deciding when to pause.
+
+It also made the difference between development and release builds impossible to ignore. Numerical code should be measured with compiler optimizations enabled. Benchmarking an unoptimized debug build and blaming the language would be meaningless.
+
+## The benchmark became feedback
+
+The calculator measures its own runtime and reports the number of iterations. In my recorded runs, it computed 1,000 digits in roughly 124 microseconds, 10,000 digits in about 33 milliseconds, and 100,000 digits in around three seconds. Exact results depend on hardware and build configuration, but the progression is the interesting part.
+
+Performance is not one number. As the requested precision grows, the program performs more iterations and every operation involves larger values. Ten times as many output digits means more than ten times the work because the numbers themselves become more expensive to multiply and divide.
+
+That behavior turned timing into a design tool. If a change made the code more complicated but did not improve the release build, it was probably not worth keeping. If performance fell off sharply at a certain precision, the next question was not “how do I micro-optimize this loop?” but “which arithmetic operation or representation becomes dominant here?”
+
+The project made optimization feel less like guessing. Change one thing. Build in release mode. Measure it. Keep the result only if the evidence and the code both improve.
+
+## Why not Python?
+
+Python would have been faster to write. It has arbitrary-size integers built in, good numeric libraries, and much less compiler friction. For a script that calculates a modest number of digits once, Python would be a completely reasonable choice.
+
+But the purpose of this project was not only obtaining pi. I wanted the implementation itself to teach me something about systems-level performance.
+
+Rust made me confront details Python would happily hide:
+
+- Decimal digits must be translated into binary precision.
+- Intermediate rounding needs guard space.
+- Big-number operations have allocation and ownership costs.
+- Algorithmic convergence matters more than loop syntax.
+- Debug and optimized builds are different products.
+- Outputting 100,000 characters can become a separate cost from calculating them.
+
+That is why this was a better Rust project than another CRUD application. The problem applied pressure to the parts of the language I wanted to understand.
+
+## The best learning projects have an objective answer
+
+Pi is either correct or it is not. The program is either faster or it is not. The requested number of digits either appears or it does not.
+
+That clarity is rare in personal projects. There is no debate about whether the button feels modern enough. I could compare output, measure runtime, inspect memory behavior, and know whether a change helped.
+
+Pi Calc will never be the software people use to set a world record. It does not need to be. It turned a famous constant into a compact lesson about arbitrary precision, numerical algorithms, foreign libraries, ownership, and measurement.
+
+I used Rust to calculate pi because I already knew the answer.
+
+The part I wanted to discover was how the machine gets there.

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#020202" />
+        <meta name="darkreader-lock" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="Charlie" />
+        <title>clh.lol</title>
+        <meta
+            name="description"
+            content="Charlie is a student developer building a macOS app, websites, and a homelab."
+        />
+        <meta name="author" content="Charlie H" />
+        <meta
+            name="keywords"
+            content="Charlie H, Startle, React, TypeScript, Linux, self-hosting, homelab"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://clh.lol/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="clh.lol" />
+        <meta property="og:title" content="Charlie H" />
+        <meta
+            property="og:description"
+            content="Apps, websites, small tools, and notes from Charlie H."
+        />
+        <meta property="og:url" content="https://clh.lol/" />
+        <meta property="og:image" content="https://clh.lol/logo.svg" />
+        <meta property="og:image:alt" content="clh.lol logo" />
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <link rel="apple-touch-icon" href="/logo.svg" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="preload" href="/src/assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/src/assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
+        <noscript>
+            <style>
+                header[style*="opacity:0"],
+                #main-content [style*="opacity:0"] {
+                    opacity: 1 !important;
+                }
+
+                header[style*="transform:"],
+                #main-content [style*="transform:"] {
+                    transform: none !important;
+                }
+
+                #main-content [style*="filter:blur"] {
+                    filter: none !important;
+                }
+
+                #main-content [style*="clip-path:inset"] {
+                    clip-path: none !important;
+                }
+            </style>
+        </noscript>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "clh.lol",
+                "url": "https://clh.lol/",
+                "description": "Apps, websites, small tools, and notes from Charlie H.",
+                "author": {
+                    "@type": "Person",
+                    "name": "Charlie H",
+                    "url": "https://clh.lol/",
+                    "sameAs": ["https://github.com/Charlie284/"]
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
+</html>

@@ -1,0 +1,112 @@
+---
+title: "Why Open Source Matters"
+date: "2026-06-24"
+description: "Open source lets me inspect, repair, and keep using the software I depend on. That matters more to me than getting it for free."
+slug: "why-open-source-matters"
+wordCount: 1836
+tags:
+  - open-source
+  - opinion
+  - development
+  - linux
+---
+
+Free software is useful when you are a student without much of a software budget. It still is not the main reason I care about open source.
+
+I care because I can inspect the software, change it, repair it, learn from it, and keep running it if the original developer loses interest. Those options change who has control over the tools I use.
+
+That is why I run Linux on my laptop and server, self-host several services, and usually check for an open tool before choosing a closed one.
+
+## Trust: you can verify what the code does
+
+Proprietary software is a black box. You install it, it runs, and you hope it's doing what it says it does. You can't see the code. You can't audit it. You can't check whether it's sending your data somewhere it shouldn't. You're trusting the company's word, their privacy policy, and whatever third-party audits they choose to share — if any.
+
+Open source is the opposite. The code is public. Anyone can read it. Anyone can audit it. And people do — security researchers, competitors, bored teenagers, paranoid users. Bugs get found because thousands of eyes look at the code, not because a vendor's QA team got around to it.
+
+This isn't theoretical. The biggest security stories of the last decade have been open source wins:
+
+- **Heartbleed** (2014) — a catastrophic bug in OpenSSL that leaked private keys. Found by open source researchers reading the code. The fix was public, verifiable, and immediate. If OpenSSL had been proprietary, the bug would have been discovered when someone exploited it — not before.
+- **Log4Shell** (2021) — a zero-day in a ubiquitous Java logging library. Found, disclosed, patched, and deployed across the entire industry in a matter of hours. That speed is only possible because the code was public and thousands of engineers could read it and fix it simultaneously.
+- **The xz backdoor** (2024) — a nation-state-level attempt to plant a backdoor in a widely-used compression library. Caught by a single engineer who noticed weird performance behavior and investigated the open source code. If it had been closed, the backdoor would have shipped and stayed hidden for years.
+
+In each case, people outside a single vendor could inspect what was happening and verify the repair.
+
+I still have to trust maintainers, build systems, and the packages I install. The difference is that open source gives me a way to check those claims instead of relying entirely on a vendor's word.
+
+## Control: you can change what the software does
+
+Proprietary software gives you a binary. You can configure it within the options the vendor exposed. You cannot change how it works. If it does something you don't like — sends telemetry you can't turn off, changes the UI in a way that breaks your workflow, removes a feature you depend on — your only option is to stop using it.
+
+Open source gives you the source. If you don't like something, you can change it. You don't have to, most of the time — but the option exists, and the existence of the option changes the power dynamic. The vendor can't hold you hostage because you can always fork.
+
+I've done this. I've patched open source tools to fit my needs:
+
+- Disabled telemetry in a tool that had it hardcoded.
+- Fixed a bug that was blocking my workflow instead of waiting months for a maintainer to get to it.
+- Changed a default that was wrong for my use case.
+
+None of these were heroic efforts. They were small diffs, applied in minutes, because the code was right there. With proprietary software, each one would have been a support ticket that might or might not get answered, and the answer would have been "use it as designed or don't use it."
+
+**Control isn't just about customization. It's about not being at the mercy of a roadmap.** When a proprietary vendor decides to deprecate a feature, kill an API, or shut down a product, you're done. Your workflow breaks. Your integration breaks. Your business breaks. When an open source project does the same, you can maintain the old version yourself, or fork it, or pay someone to maintain it. The software doesn't die when the vendor loses interest — it lives as long as someone cares.
+
+## Repair: you can fix it when it breaks
+
+Things break. Software has bugs. Configurations drift. Dependencies update and break compatibility. The question isn't whether things break — it's what happens when they do.
+
+Proprietary software: you file a ticket. You wait. You work around it. If the vendor decides it's not worth fixing, or the product is end-of-life, or you're not a big enough customer, the bug is permanent. I've used tools with known bugs that were reported years ago and never fixed. The vendor's response was effectively "don't use it that way." There was no other way to use it.
+
+Open source: you can fix it. Yourself, right now, without asking. I've fixed bugs in dependencies that were blocking my projects — not by waiting, but by reading the code, finding the problem, writing a patch, and moving on. Some of those patches I submitted back upstream. Some I kept local because they were specific to my setup. Both are options that don't exist with proprietary software.
+
+This is the repairability argument, and it's the same one that applies to hardware. A phone you can't open is a phone you can't fix. A car with a locked hood is a car you can't service. A program with no source is a program you can't repair. We accept locked-down software because we've been trained to, not because it's better.
+
+**The right-to-repair movement is about hardware. Open source is right-to-repair for software.** The principle is identical: you should be able to fix the tools you depend on, not beg the manufacturer for permission.
+
+## Learning: you can see how it works
+
+I learned to code by reading open source. Not tutorials — actual code. I read the source of tools I used, figured out how they worked, copied patterns I liked, and got better. This is how most developers learn, and it's only possible because the code is open.
+
+Closed-source software limits me to the interface and whatever documentation the vendor publishes. I cannot trace its data flow or study how the developers solved a problem internally.
+
+Open-source repositories give me working examples from databases, compilers, networking tools, graphics software, and operating systems. I can read production code without working for the company that wrote it.
+
+When I wanted to understand how DNS resolution actually works, I read `dnsmasq` source. When I wanted to understand how a reverse proxy handles connection pooling, I read `Caddy`. When I wanted to understand how a container runtime isolates processes, I read `containerd`. None of this required access, credentials, or relationships. The code was there. I read it. I understood.
+
+When the source is available, the software can teach developers who were never part of the original team. That access mattered when I was learning and still matters whenever documentation stops short of the detail I need.
+
+## Independence: you're not a tenant on your own machine
+
+Self-hosting makes the ownership question concrete for me. I want to keep running the systems I depend on even if a company changes direction.
+
+Proprietary software makes you a tenant. You use the software at the vendor's pleasure. They can change the terms, raise the price, kill the product, lock you out, or shut down entirely — and there's nothing you can do about it. Your data is in their format, in their cloud, accessible only through their software. When they pull the plug, you lose everything.
+
+Open source gives me more practical control. Subject to its license, I can keep a version running on my own hardware and store data in formats I can still read if the hosted product disappears.
+
+This matters most at the infrastructure layer:
+
+- **Linux vs Windows/macOS** — I run Linux because no one can decide to stop supporting my hardware, change my UI, or add ads to my file manager. The OS is mine.
+- **Self-hosted services vs SaaS** — I run my own services because no one can shut down my media server, delete my notes, or change my dashboard's pricing. The service is mine.
+- **Open formats vs proprietary formats** — I store data in formats I can read without a specific vendor's software because no one can make my files unopenable by deprecating the program that reads them. The data is mine.
+
+I do not need to be completely off-grid. I only want to avoid making one vendor the single point of failure for tools and data I care about.
+
+## The honest counterarguments
+
+Open source has its own problems:
+
+**It can be harder to use.** Proprietary software invests in UX, onboarding, and "just works" polish. Open source often assumes you know what you're doing. There's a learning curve. For a lot of people, that curve isn't worth it. That's a fair trade for simplicity, and I don't judge anyone for making it.
+
+**Maintenance is on you.** Open source doesn't auto-update, doesn't have a support line, and doesn't guarantee compatibility. If you self-host, you're the sysadmin. I enjoy that. Most people don't. That's fine.
+
+**Not all open source is good.** Sturgeon's Law applies: 90% of everything is mediocre. There's open source that's abandoned, insecure, poorly documented, or actively hostile to its users. "Open" doesn't mean "good." It means "inspectable and fixable" — which is necessary but not sufficient.
+
+**Commercial open source is complicated.** Companies open-sourcing their core product, then offering a hosted version, then slowly moving features behind a proprietary license (the "open core" bait and switch). It's a real pattern. It doesn't invalidate open source — but it means you have to pay attention to licenses, not just assume "open = forever free."
+
+Those costs are real, and sometimes a proprietary product is the sensible choice. I still prefer an open tool when I am willing to maintain it because inspection and repair remain available if something goes wrong.
+
+## Why this matters to me personally
+
+I'm a student developer. I don't have a budget for software licenses. I don't have a team of sysadmins to manage vendor relationships. I don't have leverage to get a proprietary vendor to fix a bug that affects me.
+
+What I have is the ability to read code, write patches, and run servers. Open source turns that ability into independence. I can run the same tools that billion-dollar companies run, on hardware I scrounged together, configured the way I want, fixed when it breaks. No permission. No payment. No gatekeeper.
+
+That is why I use Linux, self-host, and look for open tools first. Open source fits what I can do: read code, learn from it, and repair the software I depend on without waiting for a vendor to decide my problem matters.

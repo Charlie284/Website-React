@@ -1,0 +1,123 @@
+---
+title: "Modern News Apps Are Broken, So I Built My Own"
+date: "2026-07-22"
+description: "News apps optimize feeds, headlines, and notifications. I wanted sources, context, and control, so I built Newron from 76 RSS feeds, AI briefings, bias lenses, and deeper research."
+slug: "modern-news-apps-are-broken"
+wordCount: 1714
+tags:
+  - newron
+  - ai
+  - rss
+  - development
+  - projects
+---
+
+Modern news apps are excellent at making me consume news and strangely bad at helping me understand it.
+
+Open one and the pattern is familiar: an infinite feed, the same breaking story rewritten twelve times, notifications designed to manufacture urgency, and a recommendation system quietly deciding what deserves attention. I can spend twenty minutes scrolling and leave with more headlines in my head but no clearer idea of what actually happened.
+
+The problem is not a lack of reporting. There is more reporting available than any person could read. The problem is the layer between the reporting and the reader.
+
+Most news apps want to own that layer. They choose the sources, rank the stories, build the profile, and optimize the feed. Even when the articles are good, the product around them rewards reaction over context.
+
+So I built [Newron](https://github.com/Charlie284/newron), a cross-platform news reader that starts with 76 RSS feeds and tries to turn them into something closer to a research briefing than another doomscrolling machine.
+
+It is not neutral. No news product is. But unlike an invisible recommendation feed, I can inspect the sources, change the logic, choose the model, and admit where the analysis is uncertain.
+
+That was the point.
+
+## The feed is the first thing that broke
+
+A chronological feed has an obvious rule: newer items appear before older ones. An algorithmic feed has thousands of rules, none of which the reader can see.
+
+Maybe a story is at the top because it is important. Maybe it matches my past behavior. Maybe people similar to me clicked it. Maybe the headline produces unusually long sessions. Maybe a publisher paid for placement. The interface usually does not tell me, so every ranking decision arrives disguised as reality.
+
+That creates a weird kind of tunnel vision. The more I interact with one subject or viewpoint, the more the system learns that it can keep me engaged with the same thing. Personalization feels useful until it becomes a feedback loop.
+
+Newron begins with a much less intelligent technology: RSS.
+
+RSS does not know who I am. It does not optimize for retention. It does not care which story makes me angry. A publisher exposes a list of articles and the reader decides what to do with it. That makes RSS boring, portable, and almost perfect as infrastructure.
+
+The app currently defines 76 feeds across general news, politics, world reporting, business, science, technology, health, and sports. They include giant national outlets, regional reporting, international sources, specialist publications, and sources with sharply different editorial perspectives.
+
+The number is not impressive by itself. Seventy-six bad inputs would still produce a bad product. The value is that the source list is explicit. It is code I can read, question, and change—not an audience profile hidden in a company's recommendation system.
+
+## Seventy-six feeds cannot become seventy-six tabs
+
+Pulling RSS is the easy part. Turning it into a usable briefing is the actual product.
+
+If Newron simply dumped every item from every feed onto the screen, it would recreate the overload I was trying to escape. Many publications cover the same event. Feeds use inconsistent categories. Descriptions range from full paragraphs to useless fragments. Some endpoints fail. Some stories arrive through multiple sources with slightly different headlines.
+
+The current pipeline takes at most three items from each RSS feed, merges those results with optional TheNewsAPI and NewsData.io responses, normalizes the fields, infers topics, and removes duplicates. It then limits the working digest to 24 articles.
+
+That limit matters more than “76 sources” on a feature list. A news reader needs the discipline to leave things out. More inputs can improve coverage; more output usually recreates the problem.
+
+Newron also caches the last successful digest on the device. The old briefing can appear immediately while fresh reporting loads, and a failed source does not have to turn the entire home screen into an error message. That is a small implementation detail, but it changes how the app feels. News is a network-dependent product. Failure has to be part of the interface.
+
+## AI should compress reporting, not replace it
+
+This is where the project becomes more complicated.
+
+Newron sends the selected reporting to an AI model and asks it to consolidate overlapping stories, produce a short briefing, and add missing current context through web research when the supplied material is thin. The model returns a two-sentence overview and structured analysis for the articles in the digest.
+
+The user can choose between supported models rather than pretending one model is an objective news machine. The current fallback list includes Gemma, Nemotron, and MiniMax options, while the app can load other usable text models through its worker.
+
+I do not think an AI summary becomes true because it sounds calm. Models can omit important details, flatten disagreements, confuse an update with an established fact, or produce a clean explanation from messy evidence. Fluent text is not the same as verified reporting.
+
+That is why the articles and their sources remain the foundation. The model is a compression and navigation layer. It should help answer “what are these sources talking about?” and “where should I read next?” It should not become an unnamed source of its own.
+
+The distinction changes the design. A summary without visible reporting underneath it is a chatbot answer. A summary connected to multiple articles is a starting point that can be challenged.
+
+## Bias analysis is useful only when it admits uncertainty
+
+Every news aggregator eventually runs into the word “bias.” Most handle it badly.
+
+The easy version is assigning every publication a permanent political label and treating every article from that publication as identical. That is convenient and obviously incomplete. An outlet has an editorial history, but individual reporting can be straight, opinionated, skeptical, sensational, or simply wrong in ways a left-center-right badge cannot explain.
+
+Newron uses a leaning score and label for each article. Before model analysis is available, a small heuristic estimates a fallback from the source and text. The model can then evaluate the source, headline framing, snippet, and available article excerpt and return a reason for its assessment. A bias lens lets the reader filter the visible mix toward left, center, or right.
+
+This is analysis, not measurement. There is no political thermometer hidden inside an article. The score reflects a model, a prompt, selected text, and assumptions about what “left” and “right” mean. It can be wrong.
+
+I still think showing the attempt is more useful than silently ranking sources. The important part is exposing the reason and preserving the original article so the reader can disagree. A bias label should begin a question, not end one.
+
+The more honest version of this feature may eventually focus less on a single axis and more on observable differences: which facts sources share, which claims appear in only one outlet, what language changes, and which uncertainty disappears between the reporting and the headline.
+
+That is harder to fit into a colored badge. It is also closer to how bias actually works.
+
+## “Go Deeper” is the feature I actually wanted
+
+Briefings solve the first five minutes. They do not solve the moment when one sentence makes me stop and think, “Wait, what does that mean?”
+
+In most news apps, I leave the article, open a search engine, retype the phrase, inspect several results, and try to reconstruct the context. The reading flow is gone.
+
+Newron lets me highlight text and choose **Go Deeper**. That selected phrase becomes the focus of a separate research request using related local articles and current web context. The result is a short explanation of the topic rather than another generic summary of the whole news cycle.
+
+This is where AI makes the most sense to me. Not replacing the article and not predicting what will keep me scrolling—reducing the friction between curiosity and investigation.
+
+There is also a deliberately narrower fact-check flow. It asks the model to use only the provided articles and separate what most sources agree on, what remains disputed, what appears overstated, and what the reporting actually supports. It cannot prove a fact merely because three outlets repeated it, but the constraint prevents “fact-checking” from quietly turning into unconstrained generation.
+
+## Building my own did not remove the editorial decisions
+
+Writing the code made one thing impossible to ignore: every news product is editorial software.
+
+I chose the 76 feeds. I chose the 24-article limit. I chose how duplicates are removed, how topics are inferred, which text reaches the model, what the model is asked to return, and how a leaning score affects filtering. Even the neutral-looking fallback behavior contains my decisions.
+
+Open source makes those decisions inspectable. It does not make them disappear.
+
+The AI layer adds another set of tradeoffs. Article excerpts leave the device through a worker for model processing. Newron redacts patterns that look like email addresses, phone numbers, payment-card numbers, IP addresses, credentials, URLs, and government identifiers before building prompts, but this is still a network service—not a completely local reader. Convenience creates a dependency, just as it does everywhere else.
+
+Flutter created its own trade. One codebase targets Android, iOS, web, macOS, Windows, and Linux, which is ideal for a personal project I want available everywhere. Cross-platform does not mean every platform behaves identically. Text selection, networking, storage, and layout still need platform-specific attention.
+
+Newron is a working project, not a solved theory of news. That honesty is part of why I built it.
+
+## What I ended up building
+
+Modern news apps are broken because they confuse consuming more information with understanding it.
+
+I do not need another infinite feed. I need a finite briefing with visible sources, enough disagreement to notice the edges of a story, and a fast path from “what happened?” to “help me understand this specific part.”
+
+RSS gives Newron independence from the feed algorithm. AI helps compress and explore the reporting. Bias analysis makes the framing discussable, even when the score itself is imperfect. Go Deeper turns a selected sentence into a research question.
+
+None of those features can make the news neutral. They can make the machinery less invisible.
+
+That is already better than another app pretending its feed simply shows what matters.

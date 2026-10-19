@@ -1,0 +1,103 @@
+---
+title: "WHY I HATE OPUS 5"
+date: "2026-08-19"
+description: "Opus 5 can solve hard coding problems. It can also turn a small job into an expensive, overthought mess."
+slug: "why-i-hate-opus-5"
+wordCount: 1374
+tags:
+  - claude
+  - opus
+  - ai
+  - coding
+  - opinion
+---
+
+Opus 5 is extremely good at coding. That doesn't mean I like working with it.
+
+A bad model is easy to deal with. It misses the point, writes broken code, and gets replaced. Opus 5 can head in the wrong direction while looking completely reasonable. The plan makes sense. The code is clean. The explanation is convincing. Then I notice it solved a larger and slightly different problem than the one I gave it.
+
+Anthropic calls Opus 5 [thoughtful, proactive, and better at checking its own work](https://www.anthropic.com/news/claude-opus-5). I believe them. Those are also the exact qualities that make it exhausting.
+
+Sometimes I want the machine to change the button color and stop.
+
+## It can't leave a small job alone
+
+"Proactive" sounds great in a launch post. In a real repository, it often means the model notices things that aren't its business.
+
+A repository isn't a clean benchmark task. It has somebody's unfinished experiment in the working tree. It has duplicated code that may be waiting on a compatibility fix. It has an old dependency nobody wants to upgrade five minutes before a release. The boundary around a task is rarely written down in one perfect paragraph.
+
+Opus sees the warning next to the bug and wants to fix both. It sees two similar components and starts planning an abstraction. Ask it to review a file and it may rewrite the file because the rewrite looks better than the review.
+
+That isn't always bad judgment. Sometimes the extra change really is useful. The annoying part is having to inspect every plausible improvement to figure out whether it belongs in the patch. Obviously broken code is cheap to reject. A polished solution to the wrong problem takes longer.
+
+I don't need a model to notice everything. I need it to know which things are its business.
+
+## Every task becomes a project
+
+Opus likes ceremony. It inspects the repository, makes a plan, revises the plan, runs checks, and explains what the checks proved. That workflow is sensible for a difficult bug. It is ridiculous when I asked a direct question or wanted one line removed.
+
+Most coding work isn't a heroic test of intelligence. It is tracing a state bug, changing a query, or finding the environment variable with the wrong name. The job may require care, but it doesn't need a speech.
+
+The extra process also makes the model feel slower than the timer says. I have to read status updates that repeat the prompt, explanations of obvious choices, and a closing summary that tells me the same thing a third time. The actual change is buried inside proof that the model took the task seriously.
+
+I don't want every small job to feel like I hired a consultant.
+
+## Benchmarks don't measure restraint
+
+Anthropic says Opus 5 leads several coding and knowledge-work evaluations. Its launch post has charts, customer quotes, and examples of the model solving work that competing models couldn't finish.
+
+That tells me the model improved. It doesn't tell me whether it is pleasant to use.
+
+A benchmark measures a defined task under defined conditions. It doesn't measure whether the model preserved an unrelated local edit or understood that "review this" did not mean "rewrite this." It certainly doesn't measure how much time I spent checking work that was outside the original request.
+
+Opus can also get much farther before a bad assumption becomes obvious. A weaker model may fail on the first command. Opus can build a coherent plan on top of the mistake, pass a narrow test, and hand back a result that looks finished. Finding the bad premise is now my job.
+
+The numbers I care about are boring. Did I have to revert anything? Did the model check the claim that mattered? How much review time did it actually save? Those answers depend on the repository and the task, which makes them hard to fit into a launch chart.
+
+## Passing checks isn't the same as proving the result
+
+Opus 5 is better at verifying its work. Good. A model with terminal access should run the tests instead of staring at its own code and declaring victory.
+
+The problem is that checks only prove what they cover. A unit test doesn't prove the full user flow works. A successful build says nothing about whether the page looks right. Mocked API data doesn't prove the real account integration. Compiling a macOS app is not the same as signing it, installing it on another machine, and shipping it.
+
+Models blur those boundaries because a clean ending feels better than an incomplete one. The build passes, so the work is done. The screenshot looks right, so the feature is done. The test used the same fixture as the implementation, but both are green, so the integration is done.
+
+More checking can make this harder to spot. A long list of successful commands looks rigorous even when none of them touched the risky part.
+
+I would rather read one honest sentence: "The build passes, but I didn't verify the real login." That tells me exactly where the proof ends.
+
+## It is expensive when it wanders
+
+The API price is [$5 per million input tokens and $25 per million output tokens](https://www.anthropic.com/news/claude-opus-5). Fast mode costs twice as much.
+
+Maybe that is competitive for a frontier model. It still hurts when the model spends those tokens rediscovering the architecture, exploring an unwanted refactor, and writing four paragraphs before choosing the obvious fix.
+
+The effort control puts me in a strange position. Turn it down and I am paying for Opus while asking it to act less like Opus. Turn it up and I get more of the behavior that bothers me.
+
+For a hard debugging session, the cost can make sense. For normal maintenance, I often want a faster model that follows the boundary cleanly. The useful number isn't intelligence per token. It is the total cost of reaching the right result, including the time I spend reviewing it.
+
+## The model keeps changing underneath the name
+
+Opus 5 followed a quick run of Opus releases. Each version changes more than benchmark scores. It changes how much the model writes, when it asks a question, how readily it edits files, and which mistakes I need to watch for.
+
+That makes trust temporary. Instructions written for a cautious model can make the next one painfully slow. A prompt that once needed "check your work" may produce an hour of unnecessary investigation after an upgrade. The product is still Claude, but I have to learn its habits again.
+
+The fallback behavior makes this stranger. Anthropic says flagged Opus 5 requests in Claude products can fall back to Opus 4.8, while API developers can choose automatic fallbacks. Keeping the task alive is useful, but the model at the end of a session may not be the model selected at the start.
+
+I want that handoff to be obvious. Tell me what triggered it and which model is continuing. Different models have different judgment. Pretending the switch is unimportant does not make it unimportant.
+
+## Why I still use it
+
+The worst thing about Opus 5 is that it is too useful to dismiss.
+
+It can stay with a complicated problem longer than weaker models. It is good at following a bug across several files and noticing when the obvious fix only hides the symptom. When the task really does involve code, tests, documentation, and visual output, keeping the whole job in one session can save a lot of time.
+
+That is when I want Opus. Give it the ugly bug with no clear owner. Give it the migration where every option has a downside. Let it challenge the first plan and keep digging after the easy fix fails.
+
+I just don't want that energy applied to every damn task.
+
+The next improvement I want is not more agency. I want better restraint. Preserve the work that was already there. Stop when the request is complete. Say when the evidence runs out. Understand that leaving a nearby problem alone can be the correct technical decision.
+
+Opus 5 is smart enough to do all of that. It just isn't consistent enough yet.
+
+That is why I hate it.

@@ -1,0 +1,171 @@
+---
+title: "Why Even Good Electron Apps Are SHIT"
+date: "2026-08-19"
+description: "Even at its best, Electron is inefficient, uses too much RAM, and never fully belongs on the operating system. Fast does not make that good."
+slug: "why-even-good-electron-apps-are-shit"
+wordCount: 2480
+tags:
+  - electron
+  - desktop
+  - macos
+  - native
+  - opinion
+---
+
+Theo Browne made a video called [“Is Electron Really That Bad?”](https://www.youtube.com/watch?v=WdmfFmwsGDo), arguing that Electron gets blamed for problems it did not cause.
+
+His argument is that apps like Slack and Discord became bad because the companies behind them grew too quickly, hired too many people, and kept piling features onto successful products. A native version could have been ruined by the same decisions. He also points out that Chromium is extremely good at rendering text and web interfaces, so a well-written Electron app can outperform a badly written native one.
+
+Some of those observations are true. His conclusion is still bullshit.
+
+Even a fast, polished, carefully built Electron app is still a shit desktop app.
+
+It is also inefficient. Electron apps use too much RAM because they start by loading a browser-sized, multi-process runtime before the actual product does anything useful. Careful engineering can reduce the waste, but it cannot remove that baseline.
+
+That does not mean it is unusable. VS Code is one of the best editors ever made. Discord works. Obsidian is useful. A product can be responsive, stable, attractive, and indispensable while still being a bad citizen on the computer running it.
+
+The company saves time by building one interface for every operating system. The user pays for that decision through a larger app, another browser engine, an interface that never completely belongs on the platform, and years of tiny inconsistencies that are easy to dismiss one at a time.
+
+A good Electron app hides the damage. It does not remove it.
+
+## Theo is grading the wrong thing
+
+Theo's defense concentrates heavily on speed. Chromium renders text quickly. Spotify can sit at a low CPU percentage. A SwiftUI chat client can perform worse than a web view. Therefore, Electron is apparently fine.
+
+That proves Chromium is fast. It does not prove Electron is a good foundation for desktop software.
+
+Native apps can be slow as hell. SwiftUI is not a magic performance button. A badly structured native app can block its main thread, waste memory, hammer the network, and take forever to open. Choosing the platform framework does not make the developer competent.
+
+None of that changes what Electron is. It bundles a browser and uses web technology to imitate a desktop app. Rendering one part of that imitation efficiently does not make the architecture disappear.
+
+Electron gives smaller teams a cheap way to ship on macOS, Windows, and Linux. It lets companies reuse web knowledge and large parts of an existing web product. Without it, some apps would arrive later or never exist.
+
+That explains why developers choose Electron. It does not make the result good. Getting an app on Linux is availability, not quality. Shipping the same feature on three platforms is a release advantage, not proof that any of those versions belongs on its platform.
+
+“The app exists” is an embarrassingly low standard for desktop software.
+
+## The browser is not free because it is fast
+
+Electron combines Chromium, V8, Node.js, and native APIs. Its own documentation explains why it bundles that stack instead of relying on the web view already included with the operating system. Bundling gives developers a known rendering engine, current security fixes, and consistent behavior across supported machines.
+
+That consistency has a physical cost. Electron's documentation says [most Electron apps are larger than 100 MB](https://www.electronjs.org/docs/latest/why-electron#why-bundle-anything-at-all), with compressed apps usually landing around 80 to 100 MB. Its [process model](https://www.electronjs.org/docs/latest/tutorial/process-model) resembles a modern browser: the app has a main process, while each window gets a separate renderer process for its web content.
+
+This is not an accidental bug that a talented team can optimize away. It is the architecture doing what it was designed to do.
+
+That architecture uses too much RAM. A main process, one or more renderer processes, Chromium, V8, Node.js, the application's JavaScript, and the application's own data all need memory. A good team can stop its code from leaking and defer work until it is needed. It cannot optimize Electron into a lightweight native runtime.
+
+Calling the app responsive does not make it efficient. An Electron window can scroll smoothly while holding far more memory than its job should require. Once several Electron apps are open, every individually “acceptable” baseline becomes part of the same system-wide memory pressure.
+
+VS Code has enough features to make that cost look reasonable. It is an editor, extension platform, terminal, debugger, source-control client, and half a development operating system. The browser-sized foundation is still there. Having enough features to cover it up does not make it disappear.
+
+The same foundation gets used for tiny utilities, launchers, note windows, menu bar tools, and settings screens. Suddenly a program with three buttons arrives carrying a browser, a JavaScript runtime, an IPC boundary, and an update system big enough to keep the whole stack current.
+
+Storage is cheap. That does not make waste free. Memory pressure affects everything else running on the machine. Extra processes complicate startup and shutdown. A larger runtime means more code that needs security updates. Five individually acceptable Electron apps can become an annoying amount of duplicated machinery.
+
+An app being fast after it opens does not erase what it brought along to draw the window.
+
+## Tauri is the compromise I actually like
+
+I do not hate every app that uses HTML and CSS. I hate making every app bring its own copy of Chromium and Node.js just to display them.
+
+[Tauri uses the webview already provided by the operating system](https://tauri.app/start/) instead of bundling a browser engine with each application. Its core is compiled from Rust, while the frontend can still use React, Svelte, plain HTML, or whatever web stack fits the project. Tauri's documentation says a minimal app can be smaller than 600 KB because the browser engine is not included in the bundle.
+
+That is a much less insulting compromise. The app still gets a cross-platform web interface, but it does not begin by dumping another complete Chromium runtime onto the user's machine. On Windows it uses WebView2, on macOS it uses WKWebView, and on Linux it uses WebKitGTK. The [system webview handles rendering](https://tauri.app/concept/process-model/), while native work lives in the Rust core.
+
+Tauri does not magically make web interfaces native. Developers can still ignore platform conventions, write inefficient frontend code, and use too much RAM. The system webviews also behave differently, so a team has to test the platforms it claims to support.
+
+I still prefer that foundation. Tauri removes Electron's most ridiculous decision: shipping a separate browser with every damn app. It gives developers most of the cross-platform convenience without pretending duplicated Chromium processes are a reasonable price for drawing a settings window.
+
+## It always feels like an interface doing an impression
+
+Electron can use native menus, dialogs, notifications, tray icons, and other operating-system APIs. It is not trapped inside a completely sealed browser tab.
+
+The main interface is still HTML and CSS. That means the app has to recreate all the small behavior a desktop framework receives from the platform.
+
+Text selection has to feel right. Keyboard focus has to move correctly. Context menus need the expected commands. Dragging a file into a window needs to behave like dragging a file into every other app. Full-screen mode, title bars, window restoration, accessibility, input methods, spellcheck, Services, tabs, menus, and keyboard shortcuts all have platform-specific expectations.
+
+Good Electron teams care about this stuff. They add native code, test each operating system, and polish the rough edges until most people stop noticing. Then the operating system changes and the imitation is one version behind again.
+
+This is why an Electron app can look beautiful while still feeling slightly wrong. The problem is rarely one giant failure. It is twenty tiny moments where the app responds like a website instead of the computer around it.
+
+Maybe scrolling has different weight. Maybe a shortcut works while a text field is focused when it should not. Maybe the menu bar exposes almost nothing because the real commands live inside the window. Maybe the app draws its own title bar and makes the draggable region somebody's CSS problem.
+
+None of those issues destroys the product. That is what makes them so easy to excuse.
+
+Native software has interface bugs too. The difference is its default direction. A native control starts with the operating system's behavior and gets worse when the developer fights it. An Electron control starts as web content and gets closer when the developer does extra work.
+
+## Cross-platform is not a feature of the computer in front of me
+
+Companies love saying an app is cross-platform as if every user is running three operating systems at once.
+
+I am using one computer right now. On that computer, I want the app to understand the platform it is actually running on. I want the Mac version to behave like a Mac app. A Windows user should get a Windows app, not the same web interface with different traffic-light buttons glued to the corner.
+
+Cross-platform support is valuable when I move between machines or collaborate with people on other systems. Shared behavior makes documentation easier and reduces differences between teams. I understand why products want it.
+
+One shared interface also encourages the safest common design. Platform-specific features become exceptions. Native conventions become conditionals. Anything that cannot be reproduced on all three systems starts looking like unnecessary work.
+
+The result is often a fourth interface that belongs to none of them.
+
+Developers call that consistency. I call it making every operating system host the company's private little operating system inside a window.
+
+## A good Electron app is expensive to keep good
+
+Electron does not automatically create slow apps, but it gives developers plenty of ways to create one.
+
+The official [performance guide](https://www.electronjs.org/docs/latest/tutorial/performance) tells developers to profile memory and CPU, avoid loading modules too early, keep work out of the main and renderer processes, remove unnecessary dependencies, limit blocking network requests, and carefully manage startup behavior. That is good advice. It is also a lot of ongoing discipline.
+
+The first version of an Electron app can feel great. The team knows the product is being judged, the dependency tree is still understandable, and somebody is watching every millisecond of startup.
+
+Then the product succeeds. More teams add more features. Another analytics package loads at startup. The renderer begins fetching data it does not need yet. A convenient npm dependency quietly pulls in fifteen more. The app gains five background jobs and an updater that always seems to wake up at the worst time.
+
+Native apps can decay in exactly the same way. That is irrelevant to whether Electron is a good choice. Electron begins with a browser-sized foundation and asks the team to keep proving the overhead is under control.
+
+“Electron can be fast” is true in the same way that a large truck can win a race. I am impressed when it happens. I still would not choose the truck for every trip.
+
+## VS Code is still a shit desktop app
+
+Every defense of Electron eventually points at VS Code like it ends the argument.
+
+VS Code starts quickly enough, handles enormous files reasonably well, has a huge extension ecosystem, and runs on every major desktop platform. It is a great product.
+
+It is also a shit desktop app. Its interface is a private world with its own tabs, settings, commands, extension host, layout rules, and visual language. It does not belong to macOS, Windows, or Linux. It belongs to VS Code.
+
+Microsoft has spent years making that private world fast and dependable. That work makes VS Code easier to tolerate. It does not make the app native, small, or integrated with the operating system around it.
+
+VS Code is the perfect Electron success story because it is already trying to be a platform of its own. The framework matches the product's ambition. The result is useful enough that millions of people accept the cost.
+
+Accepting a cost is not the same as proving the cost is good. VS Code proves Electron can produce indispensable software. It does not prove Electron produces good desktop apps.
+
+## A good business decision can still produce a shit app
+
+If I had an existing web product, a small team, and a requirement to support macOS, Windows, and Linux immediately, I might choose Electron too.
+
+That would be a decision to save development time by shipping a worse desktop client. Maybe that trade makes the product possible. Maybe it keeps the company alive. Maybe users prefer the Electron app to having no app.
+
+Fine. It is still a shit app.
+
+I am building Startle as a native macOS app because it is a menu bar utility for macOS. It needs to deal with local files, scheduling, permissions, playback, and the normal lifecycle of a Mac app. I do not need its interface to behave identically on Windows because there is no Windows version pretending to be the same product.
+
+SwiftUI has its own problems. Building native software can be slower. Platform APIs change, documentation can be confusing, and supporting another operating system would mean writing a lot more code.
+
+Native development costs me more time. Electron would move that cost onto every computer running the app. I know which side of that bargain I prefer.
+
+## “Fine” is not the standard I want
+
+Electron apps do not have to be slow. Chromium can render some interfaces faster than native frameworks. Bad organizations can ruin software written in any language.
+
+None of that rescues Theo's argument. He is answering the easiest version of the complaint and pretending the rest disappeared.
+
+My problem with Electron is not that JavaScript is physically incapable of drawing a responsive button. My problem is that developer convenience gets treated as if it has no permanent cost once the frame rate is good.
+
+A desktop app should feel like it belongs to the desktop. It should use the machine's resources with some sense of proportion. It should adopt the platform's behavior instead of recreating it approximately. If a company cannot justify building a real desktop client, leaving the product in a browser tab may be more honest than installing a private browser for it.
+
+Electron can be the cheapest way to ship software. Sometimes it is the only reason the software exists. A great team can build a great product with it.
+
+The desktop app is still shit. It still bundles a browser. It still treats three operating systems as interchangeable hosts. It still makes native behavior an optional layer of polish. It still optimizes the people making the app at the expense of the people running it.
+
+The best Electron apps are useful because talented developers spend years fighting the foundation they chose. They prove Electron can be made fast, polished, and dependable.
+
+They do not prove the desktop app is good.
+
+Even the good ones are shit.

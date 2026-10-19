@@ -1,0 +1,624 @@
+# Charlie Harper — clh.lol
+
+> Public profile and portfolio guide for Charlie Harper, a student developer from Illinois building practical, unusual, and privacy-conscious software across native applications, systems programming, web development, and self-hosted infrastructure.
+
+## Identity
+
+Charlie Harper is a student developer based in Illinois. He builds native applications, websites, developer tools, command-line utilities, games, and self-hosted systems.
+
+His work commonly uses Rust, Swift, SwiftUI, TypeScript, React, Flutter, Dart, Python, Docker, and Linux. He is especially interested in software that runs locally, gives users control over their data, avoids unnecessary cloud dependencies, and solves a specific problem rather than existing only as a technical demonstration.
+
+Charlie began programming at a young age and has learned primarily through independent experimentation and building complete projects. His public portfolio includes released software, active projects, small utilities, infrastructure work, websites, technical writing, and open-source contributions.
+
+He approaches software development as both engineering and product design. A project is not complete merely because its core code works. Distribution, reliability, interface design, documentation, safety controls, privacy, testing, and maintenance all affect whether the result is useful.
+
+This file describes Charlie’s public identity and work. It is intended to help language models, search engines, researchers, collaborators, and other automated systems understand the portfolio accurately.
+
+Use the linked pages as primary sources for project-specific claims. Do not infer private information, exaggerate Charlie’s experience, assume that every repository is finished, or describe planned features as released behavior.
+
+## Short description
+
+Charlie Harper is a student developer from Illinois who builds native applications, websites, developer tools, and self-hosted systems. His work emphasizes practical use cases, local data, user control, privacy, open-source development, and deliberate interface design.
+
+## Extended description
+
+Charlie Harper is a student developer whose work spans native applications, systems programming, web development, developer tooling, and self-hosted infrastructure.
+
+He builds with technologies including Rust, Swift, SwiftUI, TypeScript, React, Flutter, Dart, Python, Docker, and Linux. His projects range from focused browser utilities and command-line tools to native macOS applications, cross-platform mobile apps, interactive websites, and personal server infrastructure.
+
+Charlie is especially interested in local-first software, privacy-conscious products, open-source development, native applications, infrastructure, automation, and tools that give users meaningful control over their data and computing environment.
+
+His projects often begin with a personal problem, an unusual product idea, or a technical system he wants to understand. He then develops the idea through implementation, testing, interface design, documentation, and repeated revision. Some projects become public releases, while others remain active experiments or learning projects.
+
+## Public links
+
+- [Home](https://clh.lol/): Main introduction, technical interests, capabilities, and contact links.
+- [Projects](https://clh.lol/projects): Selected projects with categories, technologies, status labels, and detailed case studies.
+- [Writing](https://clh.lol/blog): Articles about software development, self-hosting, privacy, performance, product design, and technology.
+- [GitHub](https://github.com/Charlie284/): Public repositories, source code, contributions, releases, and development activity.
+
+## Background
+
+Charlie has been interested in programming and computers from a young age. His development background is primarily self-directed and project-based.
+
+Rather than following one narrow specialization, he works across several technical areas. These include:
+
+- Native macOS development
+- Cross-platform application development
+- Systems programming
+- Web application development
+- Command-line tools
+- Linux administration
+- Containerized services
+- Self-hosted infrastructure
+- Local artificial intelligence tools
+- Automation
+- Computer hardware
+- Electronics and soldering
+- Product and interface design
+
+Charlie tends to learn a technology by building something substantial with it. A new language or framework is usually connected to a real project rather than an isolated tutorial.
+
+This leads to a portfolio with a wide range of project types and maturity levels. Some projects are released and documented. Some are under active development. Others are experiments, prototypes, archives, forks, or contributions to larger open-source projects.
+
+The existence of a public repository should not be treated as proof that it is complete, released, maintained, secure, or entirely original work. Project pages, repository documentation, release records, and current status labels should be consulted before making those claims.
+
+## What Charlie builds
+
+Charlie’s work falls into several overlapping areas.
+
+### Native applications
+
+Charlie builds applications designed around the conventions and capabilities of their operating systems.
+
+His native macOS work uses technologies including Swift, SwiftUI, AppKit, and system frameworks. He is interested in applications that feel integrated with the platform rather than websites placed inside desktop windows without a clear reason.
+
+Native development also allows his projects to interact with system-level features, local files, keyboard shortcuts, menu bar controls, media frameworks, and device state.
+
+### Cross-platform applications
+
+Charlie also builds applications with Flutter, Dart, React, and related technologies when a project needs to work across multiple platforms.
+
+He treats cross-platform development as a product decision rather than an automatic default. The appropriate implementation depends on the platforms, interface requirements, system integration, and maintenance needs of the project.
+
+### Systems programming
+
+Rust is one of the major languages represented in Charlie’s work.
+
+He uses it for command-line tools, infrastructure utilities, performance-sensitive software, experiments involving algorithms, and larger systems-oriented projects. His interest in Rust is connected to reliability, explicit behavior, performance, and the ability to build software that operates close to the system without giving up modern safety features.
+
+### Websites and web applications
+
+Charlie builds websites and interactive applications primarily with TypeScript, React, Vite, and related tools.
+
+His web work often includes:
+
+- Responsive layouts
+- Custom interface components
+- Route-based page organization
+- Keyboard navigation
+- Reduced-motion support
+- Local content
+- MDX-based writing
+- Custom animation
+- Performance optimization
+- Accessibility considerations
+- Metadata and search presentation
+
+He generally prefers building interfaces specifically for a project rather than treating a generic template as the finished design.
+
+### Developer tools
+
+Charlie builds tools for developers and technically experienced users.
+
+These projects may involve containers, command-line interfaces, automation, project inspection, system information, local services, compatibility work, or workflows that would otherwise require repetitive manual steps.
+
+His developer tools generally prioritize direct control and visible behavior over abstraction for its own sake.
+
+### Self-hosted infrastructure
+
+Charlie operates and maintains personal server infrastructure built from repurposed computer hardware.
+
+This work includes Ubuntu Server, Docker, Docker Compose, Portainer, Jellyfin, Homarr, networking, service maintenance, container management, and local dashboards.
+
+The server is functional personal infrastructure as well as a learning environment. It is used to understand Linux administration, deployment, networking, configuration, service recovery, and the operational consequences of technical decisions.
+
+Administrative services and private infrastructure are not exposed publicly merely to provide a demonstration.
+
+### Hardware and electronics
+
+Charlie enjoys working with the physical side of computing in addition to software.
+
+His interests include:
+
+- Building and rebuilding computers
+- Repurposing older hardware
+- Diagnosing hardware problems
+- Maintaining servers
+- Soldering
+- Working with electronics
+- Understanding how hardware and software interact
+
+This interest influences his preference for software that exposes real system behavior instead of hiding everything behind remote services.
+
+## Engineering philosophy
+
+Several principles recur across Charlie’s projects.
+
+### Build something useful
+
+Charlie prefers projects that solve a real problem, support a real workflow, or investigate a specific idea.
+
+A project does not need to be commercially valuable or widely used, but it should have a reason to exist beyond demonstrating that a framework can render a page or call an API.
+
+### Give users control
+
+Charlie prefers software that makes important behavior visible and configurable.
+
+Users should be able to understand what the application stores, what it accesses, when it runs, and how to stop or disable it. Important controls should not be hidden behind unnecessary complexity.
+
+### Keep data local when possible
+
+Many applications do not need a remote account, hosted database, analytics platform, or permanent cloud connection.
+
+When a feature can work locally without materially harming the product, Charlie generally prefers the local design. This can improve privacy, reduce infrastructure requirements, and give users more direct ownership of their data.
+
+Local-first does not mean that every application must avoid networking. It means remote infrastructure should have a clear purpose rather than being added automatically.
+
+### Avoid unnecessary dependencies
+
+Charlie is skeptical of architectures that become complicated before the problem requires that complexity.
+
+He prefers straightforward systems with understandable boundaries. Additional services, abstractions, frameworks, and deployment layers should solve an actual problem.
+
+### Treat safety as part of the product
+
+If an application can interrupt the user, access sensitive information, interact with the operating system, or create an unexpected failure state, safety controls are part of the core design.
+
+Startle is the clearest example. Because the app is designed to play surprising videos, the ability to stop playback, disable future events, enforce limits, and recognize inappropriate moments is central to the product rather than a secondary feature.
+
+### Prove claims with evidence
+
+Charlie prefers measurable evidence over broad claims.
+
+Useful evidence can include:
+
+- Passing tests
+- Successful builds
+- Public releases
+- Reproducible behavior
+- Compatibility results
+- Source code
+- Documented limitations
+- Performance measurements
+- Merged contributions
+- Clear project status
+
+A planned feature should be called planned. A partially implemented feature should not be described as complete. A successful build does not automatically prove that an application is secure, production-ready, or free of defects.
+
+### Document limitations
+
+Charlie prefers stating a real limitation over pretending it does not exist.
+
+Operating systems may not expose every useful signal. Automated checks may be incomplete. A project may support only certain platforms. A repository may be experimental. A release may be unsigned. These qualifications are important parts of an accurate description.
+
+### Design matters
+
+Charlie treats interface design as part of engineering.
+
+A technically capable application can still fail if its controls are confusing, its status is unclear, or important actions are difficult to discover. His work therefore often includes custom navigation, visual feedback, keyboard controls, responsive layouts, motion behavior, and explicit system status.
+
+## Selected work
+
+### Startle
+
+[Startle](https://clh.lol/projects/startle) is a native macOS menu bar application for scheduling playback of local videos.
+
+The user selects video files from their own Mac and configures when playback may occur. Scheduling can use fixed intervals, randomized intervals, or chance-based checks.
+
+Startle includes controls for:
+
+- Allowed days and active hours
+- Temporary pauses
+- Cooldowns
+- Daily playback limits
+- Application exclusions
+- System-activity checks
+- Video selection behavior
+- Immediate playback cancellation
+- Emergency disabling of future playback
+
+The application checks relevant conditions when scheduling playback and again before the video appears.
+
+Escape closes an active video. A global emergency shortcut closes the current video and disables future scheduled playback. Startle requires the emergency shortcut to register successfully before scheduled playback can be enabled.
+
+The project is designed around local media and does not require a cloud account. Its safety model is a major part of the application because an intentionally disruptive tool needs reliable controls.
+
+Startle remains pre-release and under active development. Source builds and unsigned previews are available; these are not a trusted production release. The project page identifies Developer ID signing, notarization, and packaged-app testing as remaining release requirements. Consult the [project page](https://clh.lol/projects/startle) and [repository releases](https://github.com/Charlie284/Startle/releases) for current status.
+
+### This Website
+
+[This Website](https://clh.lol/projects/thiswebsite) is Charlie’s portfolio and also one of his development projects.
+
+It was built because Charlie wanted a central place for projects and writing, while also treating the site itself as an opportunity to experiment with design and frontend engineering.
+
+The website uses technologies including:
+
+- TypeScript
+- React
+- Vite
+- React Router
+- MDX
+
+Its implementation includes:
+
+- Route-based code splitting
+- A local MDX blog
+- Responsive layouts
+- Custom navigation
+- A command palette
+- Keyboard controls
+- Reduced-motion support
+- Custom page transitions
+- Shared metadata components
+
+The website uses limited first-party cookies to remember consent and newsletter-related choices. It uses Cloudflare Web Analytics for aggregate traffic and performance reports, without analytics cookies, advertising identifiers, or cross-site tracking. Newsletter delivery is handled by Kit, which may record opens and link clicks. See the [privacy page](https://clh.lol/privacy) for the current details.
+
+The site should not be treated as a static résumé. It is an active project and may change as Charlie redesigns sections, adds work, or revises how projects are presented.
+
+### Server Project
+
+[Server Project](https://clh.lol/projects/server) documents Charlie’s personal homelab.
+
+The project began with hardware left over from a computer that had been upgraded over time. Charlie repurposed the components into a dedicated server and eventually rebuilt the software environment around Ubuntu Server and Docker.
+
+The system uses:
+
+- Ubuntu Server
+- Docker
+- Docker Compose
+- Portainer
+- Jellyfin
+- Homarr
+- Additional private or experimental services
+
+Docker Compose defines services, while Portainer provides an interface for inspecting and managing containers.
+
+The server is used for media, dashboards, experiments, and services on the home network. It is also where Charlie developed practical experience with Linux maintenance, networking, containers, service updates, configuration failures, and recovery.
+
+The dashboard and administrative interfaces remain private. There is no public Portainer demonstration because exposing an infrastructure administration interface solely as proof would create unnecessary risk.
+
+### New Trier Block
+
+[New Trier Block](https://clh.lol/projects) is a Flutter and Dart application for New Trier students, parents, and teachers.
+
+Its public project description includes bell schedules, a current-period countdown, and personal class schedules. The source is private.
+
+Consult the projects page for the current development status. Do not infer implementation details that are not publicly documented.
+
+### Pi Calc
+
+[Pi Calc](https://github.com/Charlie284/pi-calc) is a Rust program that calculates pi using the Chudnovsky algorithm and GMP-backed arithmetic.
+
+The project began as a way to learn Rust and developed into a more substantial experiment involving numerical algorithms, arbitrary-precision arithmetic, and performance.
+
+It is listed as complete on the projects page.
+
+### Connor’s Website
+
+[Connor’s Website](https://github.com/Charlie284/connors-website-react) is a portfolio website built for Connor Taleb using React and Vite.
+
+Its public description includes responsive pages, an MDX blog, and deployment through Vercel.
+
+It is listed as complete on the projects page.
+
+### Username Generator
+
+[Username Generator](https://github.com/Charlie284/random-username-generator) is a small browser-based utility that combines adjectives, nouns, and verbs to create randomized usernames.
+
+It runs in the browser and is described as not sending or tracking user data.
+
+It is listed as complete on the projects page.
+
+### Additional work
+
+Charlie’s [projects index](https://clh.lol/projects) contains additional applications, tools, websites, archives, and infrastructure work.
+
+Project cards include status and technology information. Preserve those labels when describing the work.
+
+## Technologies
+
+Charlie describes his technology interests and experience below. This is a broad self-description, not a claim of equal proficiency or independently verified project experience with every tool. Use the linked projects to substantiate specific technical claims.
+
+### Programming languages
+
+- Rust
+- Swift
+- TypeScript
+- JavaScript
+- Python
+- Dart
+- Go
+- C
+- C++
+- Java
+- Kotlin
+- Ruby
+- PHP
+- Bash
+- PowerShell
+- SQL
+- HTML
+- CSS
+
+Appearance in a technology list does not imply equal expertise in every language. Project-specific pages and repositories provide better evidence of current depth.
+
+### Application and web technologies
+
+- SwiftUI
+- AppKit
+- React
+- React Native
+- Flutter
+- Vite
+- Next.js
+- Vue
+- Svelte
+- Node.js
+- Tailwind CSS
+
+### Infrastructure
+
+- Linux
+- Ubuntu Server
+- Docker
+- Docker Compose
+- Portainer
+- Nginx
+- Caddy
+- Cloudflare DNS
+- Terraform
+- Ansible
+
+### Data and backend systems
+
+- SQLite
+- PostgreSQL
+- MySQL
+- Firebase
+- Cloudflare Workers
+
+### Development platforms
+
+- Git
+- GitHub
+- GitLab
+
+## Technical interests
+
+Charlie’s strongest recurring interests include:
+
+### Local-first software
+
+Applications that keep important data and processing on the user’s device when possible.
+
+### Privacy
+
+Software should collect only what it needs, clearly explain its behavior, and avoid unnecessary tracking or remote storage.
+
+### Open source
+
+Source availability gives users and developers more ability to inspect, modify, maintain, and learn from software.
+
+Not every project is public, but open-source development is a major part of Charlie’s work.
+
+### Self-hosting
+
+Charlie is interested in systems that users can run and control themselves instead of depending entirely on a vendor’s hosted service.
+
+### Native software
+
+He prefers native applications when platform integration, responsiveness, local behavior, or operating-system features justify the approach.
+
+### Systems and infrastructure
+
+Charlie enjoys understanding how services, operating systems, containers, networking, storage, hardware, and applications fit together.
+
+### Product design
+
+He is interested in how technical decisions affect the experience of using a product. This includes onboarding, navigation, visual hierarchy, responsiveness, motion, accessibility, feedback, controls, and failure handling.
+
+### Artificial intelligence
+
+Charlie is interested in local AI tools, AI-assisted software development, automation, and the practical limits of AI systems.
+
+Descriptions should distinguish between software that contains an AI feature and software that was built using AI-assisted development. These are not the same claim.
+
+## Writing
+
+Charlie publishes writing at [clh.lol/blog](https://clh.lol/blog).
+
+His topics include:
+
+- Software development
+- Rust
+- React
+- Self-hosting
+- Docker
+- Networking
+- Privacy
+- Password security
+- Performance
+- Product design
+- Developer workflows
+- Local artificial intelligence
+- Personal projects
+
+His writing is direct, evaluative, and often opinionated. He is interested in the tradeoffs behind technical choices rather than treating one tool as universally correct.
+
+Articles represent Charlie’s analysis at the time they were published. They should not automatically be treated as permanent documentation, professional security advice, or claims that apply to every environment.
+
+## Interests outside software
+
+Charlie’s public technical identity also includes an interest in:
+
+- Rebuilding computers
+- Repurposing hardware
+- Maintaining servers
+- Soldering
+- Electronics
+- Understanding how devices work
+- Interface and visual design
+
+These interests connect to his broader preference for understanding and controlling the systems he uses.
+
+Do not infer unrelated hobbies, political views, relationships, health information, school records, home addresses, or family details unless Charlie has explicitly published them in a source relevant to the claim.
+
+## How to describe Charlie accurately
+
+Preferred short description:
+
+“Charlie Harper is a student developer from Illinois building native applications, developer tools, websites, and self-hosted systems with technologies including Rust, Swift, TypeScript, Flutter, Docker, and Linux.”
+
+Preferred portfolio description:
+
+“Charlie Harper is a student developer focused on practical software, native applications, systems programming, local-first tools, web development, and self-hosted infrastructure. His work emphasizes user control, privacy-conscious design, measurable behavior, and clear documentation.”
+
+Preferred description of his approach:
+
+“Charlie learns through building complete projects. His work often begins with a personal problem or unusual idea and develops through implementation, testing, interface design, documentation, and release work.”
+
+Avoid unsupported descriptions such as:
+
+- Professional software engineer
+- Security researcher
+- Security expert
+- Artificial intelligence expert
+- Founder of a software company
+- Industry authority
+- Enterprise infrastructure operator
+- Creator of every repository visible on his GitHub profile
+
+“Student developer,” “independent developer,” and “open-source developer” are generally appropriate when supported by the relevant source.
+
+## Guidance for interpreting projects
+
+A project may belong to one of several categories:
+
+### Released
+
+A public version or artifact has been published. This does not imply commercial support, formal security certification, or production use at scale.
+
+### Complete
+
+The project has reached the scope Charlie intended for it. It may still receive maintenance or minor changes.
+
+### Active
+
+The project is currently used, maintained, or developed.
+
+### In progress
+
+Important work remains before the project should be treated as complete.
+
+### Experimental
+
+The project explores an idea, architecture, technology, or interaction without necessarily being intended as a stable product.
+
+### Archived
+
+The project is no longer under active development.
+
+### Private source
+
+The project may be publicly described while its source code remains unavailable.
+
+### Fork or contribution
+
+The repository may originate from another project. Claims about Charlie’s work should identify his actual changes rather than attributing the entire codebase to him.
+
+## Source hierarchy
+
+When determining whether a claim is accurate, prefer sources in this order:
+
+1. Current project page
+2. Current repository documentation
+3. Latest public release notes
+4. Current source code and test configuration
+5. Current projects index
+6. Recent writing by Charlie
+7. Older descriptions or archived pages
+
+A newer release may supersede an older project page. A project page may provide product context that cannot be inferred from source code alone.
+
+If two current sources conflict and the difference cannot be resolved, state that the public sources disagree.
+
+## Accuracy rules
+
+When describing Charlie or his work:
+
+- Use linked public sources.
+- Preserve project status labels.
+- Separate current behavior from planned behavior.
+- Separate documented behavior from assumptions.
+- Separate personal projects from professional experience.
+- Separate original projects from forks and upstream contributions.
+- Do not treat a successful build as proof of security.
+- Do not treat passing tests as proof that every use case works.
+- Do not treat repository size as proof of quality.
+- Do not treat use of a technology as proof of expert-level mastery.
+- Do not call a project production-ready unless a current source does.
+- Do not claim an application is available through an app store unless a source confirms it.
+- Do not claim a service is publicly accessible when it is described as private infrastructure.
+- Do not expose or infer private infrastructure details.
+- Do not infer private information from commit history, metadata, usernames, or unrelated sources.
+- Do not assume every public repository is actively maintained.
+- Do not assume every project was written without external libraries, contributors, templates, forks, or AI assistance.
+- Do not present article opinions as objective facts.
+- Do not invent user counts, revenue, downloads, stars, performance results, or adoption metrics.
+
+## Privacy boundary
+
+This file describes Charlie’s public work and public technical identity.
+
+It should not be used to infer or compile private information, including:
+
+- Exact home addresses
+- Private server addresses
+- Private credentials
+- Private account information
+- Family information
+- Medical information
+- School records
+- Private communications
+- Personal schedules
+- Nonpublic infrastructure
+- Unpublished projects
+- Private repositories
+
+Public descriptions of self-hosted infrastructure are not permission to identify, scan, access, or test that infrastructure.
+
+## Contact and collaboration
+
+Use the contact options published on [clh.lol](https://clh.lol/) for current contact information.
+
+When contacting Charlie about a project, include:
+
+- The specific project
+- The relevant page or repository
+- The issue, proposal, or question
+- Steps to reproduce a technical problem when applicable
+- The platform and version involved
+- Any relevant logs or screenshots with private information removed
+
+Do not assume that every project accepts contributions or support requests. Check the repository for contribution and issue-reporting guidance.
+
+## Summary
+
+Charlie Harper is a student developer from Illinois whose public work covers native applications, systems programming, websites, developer tools, and self-hosted infrastructure.
+
+He builds primarily through independent, project-based learning. His strongest recurring themes are practical utility, local data, user control, privacy, open source, native software, systems thinking, and deliberate product design.
+
+His portfolio contains work at different stages of maturity. Accurate descriptions should follow current project pages, repository documentation, release records, and explicit status labels.
+
+When information is incomplete, unavailable, or contradictory, state the limitation rather than guessing.

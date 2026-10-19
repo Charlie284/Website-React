@@ -1,0 +1,68 @@
+---
+title: "Why I Hate Python"
+date: "2026-06-24"
+description: "Python is quick to start, but its optional types and fragmented packaging make me less confident in code I have to maintain."
+slug: "why-i-hate-python"
+wordCount: 815
+tags:
+  - python
+  - opinion
+  - development
+  - languages
+---
+
+The whitespace and snake jokes are easy. My actual problem with Python is that it often makes unfinished code feel safer than it is.
+
+I can get a script running quickly, then discover much later that the types, dependencies, or environment were never as predictable as they seemed.
+
+## The illusion of "it just works"
+
+Python's biggest selling point is also its biggest lie. You write 10 lines of code, it runs, you feel productive. No types to declare, no interfaces to implement, no compiler to satisfy. You're moving fast.
+
+Six months later, someone passes a `None` where you expected a `dict`, and your function happily chugs along for 40 lines before exploding in a place that has nothing to do with the actual bug. The traceback points at `line 847` in a file called `utils.py`. There is no `utils.py` in your project. It's in a dependency. The dependency's docs don't mention that function. You're now reading someone else's library source code at 11pm to figure out why your script died.
+
+That gap between the original mistake and the eventual error is what makes Python frustrating for me.
+
+## Types exist for a reason
+
+I write TypeScript all day. TypeScript gets criticism for being "ceremony" because you have to declare types and sometimes fight the compiler. In return, it catches many mistakes while I am writing the code instead of waiting for a particular path to run.
+
+When I pass the wrong shape to a function in TypeScript, the editor shows a red squiggle before I even save. In Python, you don't find out until the code runs — which might be in production, at 3am, when someone does something you didn't anticipate.
+
+Yes, type hints exist. Yes, `mypy` exists. I've tried them. They're opt-in, they're inconsistent across libraries, and half the ecosystem ignores them. You can't rely on someone else's type hints being correct because there's no enforcement. It's documentation that looks like types.
+
+## The dependency hell is structural
+
+`pip install` works great on a clean machine. Now try running a project from 2023. The `requirements.txt` has unpinned versions. One of them had a breaking change in a minor release (because semver is a suggestion in Python land). `pip install` gives you a version that's 3 minor releases ahead and your code breaks.
+
+Now you're in virtualenv territory. Which virtualenv? `venv`? `virtualenv`? `conda`? `poetry`? `pipenv`? Each project on your machine uses a different one. You have 14 virtual environments and you don't remember which one belongs to which project.
+
+Docker helps. But now you're using Docker to solve a problem that's fundamentally about Python's packaging story being broken. That's a bandage, not a fix.
+
+## The GIL isn't the problem everyone says it is
+
+People complain about the Global Interpreter Lock constantly. "Python can't do real threading." True, but most of the things I do are I/O-bound — HTTP requests, file reads, database calls — and `asyncio` handles that fine.
+
+The GIL isn't why I hate Python. The GIL is a tradeoff I can live with. The real problems are cultural.
+
+## The culture of "there's probably a library for that"
+
+Python's ecosystem is enormous. That's a strength until it isn't. The culture encourages reaching for a library for everything — parsing JSON, making HTTP requests, formatting dates. Each dependency is a maintenance burden you're signing up for forever.
+
+I've seen Python scripts with 47 dependencies that do something I could write in 80 lines of Go with the standard library. When you ask why, the answer is always "why reinvent the wheel?" Because the wheel you imported has 200 open issues, hasn't been updated in 2 years, and does 400 things when you need 3 of them.
+
+## Where Python still fits
+
+I still write Python. I don't hate it enough to stop using it — it's the right tool for certain jobs:
+
+- **Quick scripts** — parse a file, hit an API, transform some data. Python is genuinely the fastest way to do this. The lack of ceremony is a feature for throwaway code.
+- **AI/ML stuff** — the ecosystem is there. PyTorch, transformers, all of it. You don't have a choice. You use Python.
+- **Automation on my server** — cron jobs, monitoring scripts, glue code between services.
+
+For code I expect to maintain for more than a month, share with other people, or depend on, I usually reach for TypeScript or Go.
+
+## So why do I avoid it?
+
+I do not hate Python as a language. I dislike how easy it is to postpone decisions about types, dependencies, and environments until the code is already important. It saves time in the first hour and can demand that time back later.
+
+I will keep using Python for scripts, prototypes, and machine-learning tools. I just do not treat a successful run as evidence that the code is ready to maintain.

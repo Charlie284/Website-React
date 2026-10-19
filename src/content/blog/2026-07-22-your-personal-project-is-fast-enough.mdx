@@ -1,0 +1,176 @@
+---
+title: "Your Personal Project Is Fast Enough—Stop Benchmarking It"
+date: "2026-07-22"
+description: "Performance work is valuable when speed is the project. Everywhere else, endless benchmarks can become a technical-looking excuse not to ship."
+slug: "your-personal-project-is-fast-enough"
+wordCount: 1804
+tags:
+  - performance
+  - development
+  - rust
+  - react
+  - opinion
+---
+
+Your personal project is probably fast enough.
+
+The database is not your bottleneck. The framework is not holding you back. The extra allocation in a function called twice per page is not why nobody uses the app.
+
+Nobody uses the app because it is still on your laptop while you compare benchmarks.
+
+Performance work feels productive because it produces numbers. A feature can be subjective and messy. A benchmark gives me a clean result: 14 percent faster, 30 kilobytes smaller, 200 microseconds saved. I can improve the number without deciding whether the project is useful, understandable, or ready for another person.
+
+That makes optimization one of the most respectable forms of procrastination in software development.
+
+I am not against making software fast. I wrote a Rust program whose entire purpose is calculating pi quickly, and I spent real time reducing the load cost of this website. The lesson from those projects is not “performance does not matter.” It is that performance only makes sense relative to the job.
+
+Pi Calc and a personal website need completely different definitions of fast.
+
+## When speed is the product
+
+[Pi Calc](https://github.com/Charlie284/pi-calc) has an unusually clear contract: request a number of digits, calculate them correctly, and report how long it took.
+
+Performance is not an implementation detail there. It is most of the project.
+
+A naive series could calculate pi correctly while converging so slowly that the program would be pointless at interesting precision. Switching to the Chudnovsky algorithm changes the scale of the problem because each term contributes roughly 14.18 decimal digits. Advancing the terms with recurrences avoids rebuilding giant factorials on every iteration. GMP- and MPFR-backed arithmetic handles values that do not fit in normal machine types.
+
+Those optimizations are worth doing because they directly serve the stated goal. The README can report roughly 124 microseconds for 1,000 digits, 33 milliseconds for 10,000, and around three seconds for 100,000 on the machine used for those measurements. A slower result is meaningfully worse when calculation speed is what the program demonstrates.
+
+Even then, the benchmark needs context. Was it a release build? What hardware ran it? Does the timer include formatting and output? Was it one lucky run? How does performance grow as both the number of iterations and the size of every arithmetic operation increase?
+
+A precise number without its conditions is just confident decoration.
+
+The important question is whether the benchmark helps choose an implementation. In Pi Calc, it does. Changing the algorithm, precision strategy, or big-number operations can produce a measurable difference in the program's core task.
+
+Speed is the project, so measuring speed is work.
+
+## When speed is the experience
+
+This website has a different job.
+
+It needs to show my work, make the writing comfortable to read, behave well on phones, respect different input and motion preferences, and avoid making a visitor wait for visual effects they did not ask for. Nobody cares how quickly React maps the projects array in isolation.
+
+Website performance is experienced, not admired in a terminal.
+
+That is why user-centered measurements are more useful than microbenchmarks. [Core Web Vitals](https://web.dev/articles/vitals) focus on loading, interaction responsiveness, and visual stability because those are things a visitor can feel. They are not the entire experience, but they point in the right direction: measure the page as used, not a loop removed from it.
+
+The useful optimizations on this site were structural:
+
+- Lazy-load routes so one visit does not require every page component.
+- Use WebP versions of large screenshots instead of making visitors download heavier originals.
+- Give images dimensions so the page does not jump when they arrive.
+- Respect reduced-motion preferences and avoid expensive pointer effects on touch devices.
+- Keep blog content in static MDX and generate route metadata at build time.
+- Reduce unnecessary work before adding clever caching around it.
+
+These decisions make the site feel faster or transfer less data. They also remain understandable six months later.
+
+By contrast, shaving a fraction of a millisecond from a render that already finishes inside a frame would change nothing a visitor can perceive. The benchmark might improve while the product stays identical.
+
+That is the line developers keep crossing without noticing.
+
+## “But I might need to scale”
+
+You probably will not.
+
+That is not pessimism. It is permission.
+
+Most personal projects never receive enough traffic for database sharding, distributed queues, multiple regions, or a custom caching layer to matter. Designing for imaginary millions of users creates real complexity for the one user who exists today: you.
+
+Every performance abstraction has a maintenance cost. A cache needs invalidation. A worker queue needs retries and observability. A denormalized table needs synchronization. A rewritten service needs two implementations during migration. A faster language needs packaging, deployment, libraries, and expertise the old language may already have.
+
+If growth arrives, it will bring evidence. Logs will show the slow paths. Real usage will reveal which screens matter. Traffic patterns will expose whether the bottleneck is CPU, storage, network latency, a third-party API, or an image three times larger than it needs to be.
+
+Optimizing before that evidence does not prepare for scale. It guesses at scale and makes the current system harder to change when the guess is wrong.
+
+The most scalable architecture for a personal project is often the one simple enough to survive long enough to gain users.
+
+## Benchmarks answer exactly the question you asked
+
+That is both their strength and their trap.
+
+Ask which function processes a fixed input faster and a good benchmark can answer. It cannot tell me which function is easier to maintain, whether the result matters to a user, or whether the code runs frequently enough to care.
+
+Bad optimization usually begins with a correct number attached to the wrong question.
+
+Consider a common frontend argument: one framework renders a synthetic benchmark faster than another. That result might be real. It still says very little about a portfolio whose load time is dominated by JavaScript startup, font loading, images, animation, or the visitor's network. Rewriting the site could win the framework benchmark and lose months of actual progress.
+
+The same problem appears in systems code. A tight loop becomes twice as fast, but the application spends most of its time waiting on disk or a remote API. A new serializer saves microseconds while the network takes 200 milliseconds. The optimized code is genuinely faster and completely irrelevant.
+
+Before trusting a benchmark, I need to ask:
+
+1. Does it represent the real workload?
+2. Is the measured code a meaningful part of total time?
+3. Are the inputs and environment documented?
+4. Does the improvement survive repeated runs?
+5. Will a user, operator, or project goal benefit?
+
+If the fifth answer is no, the first four only prove I benchmarked carefully.
+
+## Optimization is allowed to be the hobby
+
+There is one important exception: sometimes the benchmark is the fun.
+
+Pi Calc did not need to exist. Calculating a known constant was an excuse to learn Rust, arbitrary-precision arithmetic, algorithmic convergence, and measurement. Making it faster was valuable because learning how to make it faster was the actual purpose.
+
+That is a perfectly good reason to optimize.
+
+Personal projects do not need a business case. If I want to replace a working implementation with Rust because I want to learn Rust, I should do it. If I want to tune a renderer, write a database, or compare compression algorithms for the experience, the hours are not wasted.
+
+The only mistake is lying to myself about the goal.
+
+“I am doing this because performance is currently hurting users” requires evidence. “I am doing this because performance engineering is fun” requires none. Confusing the two produces overengineered projects defended with imaginary requirements.
+
+Call the experiment an experiment. Then it can succeed by teaching something even if nobody needs the result.
+
+## How I decide something is fast enough
+
+“Fast enough” should be a threshold, not a feeling.
+
+For Pi Calc, the threshold can be tied to input sizes: the program should calculate a certain number of digits in a reasonable time on documented hardware, without producing an incorrect final result. When the goal is exploring performance, I can deliberately move that threshold and learn what breaks.
+
+For the website, the threshold is human. Does the main content appear promptly on an ordinary phone and connection? Do interactions respond without obvious delay? Does the layout stay stable? Do animations remain smooth without blocking reading? Are route bundles and images reasonable for what they provide?
+
+For another personal app, fast enough might mean:
+
+- A command finishes before I become tempted to switch windows.
+- Search updates quickly enough to feel connected to typing.
+- A background job completes before its result is needed.
+- Memory stays inside the limits of the hardware I actually use.
+- Hosting remains inside the budget I am willing to pay.
+
+The threshold does not need to be universal. It needs to connect a measurement to a consequence.
+
+Once the project passes it, stop unless performance is itself the learning goal.
+
+## The optimization loop that does not eat the project
+
+When something is genuinely too slow, the process can remain boring:
+
+1. **Describe the problem in user terms.** “The first article appears after four seconds,” not “the bundle feels large.”
+2. **Measure a representative baseline.** Use realistic data, devices, builds, and network conditions.
+3. **Profile before guessing.** Find where the time or memory actually goes.
+4. **Fix the largest relevant cause.** Algorithms and architecture usually beat clever local tricks.
+5. **Measure again.** Confirm the improvement in the original scenario.
+6. **Protect the gain if it matters.** Add a test, budget, or repeatable benchmark.
+7. **Stop at the threshold.** Return to the project instead of inventing a harder target.
+
+The stopping rule is the part most optimization advice forgets.
+
+There is always another millisecond. There is always a smaller binary, a faster query, a more specialized data structure, or a benchmark where another tool wins. A personal project can spend its entire life becoming faster at doing something unfinished.
+
+## The stopping rule
+
+Optimize the part that defines the project.
+
+For Pi Calc, that is high-precision calculation, so algorithm choice and benchmarks belong at the center. For this website, it is the visitor's experience, so loading, responsiveness, stability, and restraint matter more than winning an isolated JavaScript test.
+
+Measure before changing architecture. Use workloads that resemble reality. Document the conditions. Stop when the result clears a meaningful threshold.
+
+And if benchmarking is simply what you enjoy, say that. Personal projects are allowed to be laboratories.
+
+Just do not spend six months making an unshipped app 14 percent faster and call it user work.
+
+Your project is probably fast enough.
+
+Ship it.

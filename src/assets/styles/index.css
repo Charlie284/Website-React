@@ -1,0 +1,414 @@
+@font-face {
+    font-family: "Fraunces";
+    font-style: normal;
+    font-weight: 500 900;
+    font-display: optional;
+    src: url("../fonts/fraunces-latin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: optional;
+    src: url("../fonts/outfit-latin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Syne";
+    font-style: normal;
+    font-weight: 700 800;
+    font-display: optional;
+    src: url("../fonts/syne-latin.woff2") format("woff2");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .page-shell {
+        @apply relative z-10 mx-auto min-h-screen w-full max-w-7xl px-5 pb-20 pt-32 text-white sm:px-8 sm:pb-24 sm:pt-36 lg:px-16 lg:pt-40;
+    }
+    .page-intro { @apply mb-8 sm:mb-10; }
+    .page-title {
+        @apply font-hero font-semibold text-white;
+        font-size: clamp(2.5rem, 6vw, 4.75rem);
+        line-height: 1.08;
+        overflow-wrap: anywhere;
+    }
+    .article-title {
+        font-size: clamp(2.25rem, 5vw, 3.5rem);
+        line-height: 1.14;
+    }
+    .page-lead { @apply max-w-[60ch] text-base leading-relaxed text-white/70 sm:text-lg; }
+    .section-title {
+        @apply font-serif font-semibold text-white;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        line-height: 1.2;
+    }
+    .editorial-title {
+        @apply font-hero font-semibold text-white;
+        font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+        line-height: 1.25;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #222222;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+html {
+    position: relative;
+    overflow-x: clip;
+    scrollbar-color: #222222 #000000;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+
+html.custom-cursor-active,
+html.custom-cursor-active a,
+html.custom-cursor-active button {
+    cursor: none;
+}
+
+/* Native field cursors make text placement and selection precise. */
+html.custom-cursor-active :is(input, textarea, [contenteditable="true"]) {
+    cursor: text;
+}
+html.custom-cursor-active select {
+    cursor: auto;
+}
+html:has(:is(input, textarea, select, [contenteditable="true"]):hover) .custom-cursor {
+    visibility: hidden;
+}
+
+/* Popovers live above document layers, including the replacement cursor. */
+html.custom-cursor-active [popover]:popover-open {
+    cursor: auto;
+}
+html.custom-cursor-active [popover]:popover-open :is(a, button) {
+    cursor: pointer;
+}
+html.custom-cursor-active [popover]:popover-open :is(input, textarea) {
+    cursor: text;
+}
+html:has([popover]:popover-open:hover) .custom-cursor {
+    visibility: hidden;
+}
+
+/* Article signups share the component but have much less room than the page. */
+.newsletter-signup {
+    container: newsletter / inline-size;
+}
+@container newsletter (min-width: 56rem) {
+    .newsletter-layout {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        align-items: end;
+        gap: 4rem;
+    }
+}
+
+/* Performance: promote scroll-scrubbed elements to their own compositor
+   layer so transforms/opacity don't trigger repaint. Applied via
+   will-change on the motion elements that scrub every frame. */
+[data-impeccable-scrub] {
+    will-change: transform, opacity;
+}
+
+@media (pointer: coarse) {
+    html {
+        cursor: auto;
+    }
+}
+
+body {
+    @apply bg-black text-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+}
+
+a {
+    color: inherit;
+}
+
+/* Even line lengths for display/headline; fewer orphans in prose. */
+h1,
+h2,
+h3 {
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+/* Visible keyboard focus on the dark canvas. Default browser focus is
+   invisible against #020202, so every interactive element needs an
+   explicit ring. `:focus-visible` keeps the ring off mouse clicks. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Honor reduced motion at the CSS level too: collapse every transition
+   and animation to near-instant for vestibular-sensitive users. The
+   Framer Motion side is gated via MotionConfig + useReducedMotion in
+   the components, but this catches anything driven by pure CSS. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Hide scrollbar for nav and other containers */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+
+.blog-prose {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 1rem;
+    line-height: 1.85;
+}
+
+.blog-prose > * + * {
+    margin-top: 1.25rem;
+}
+
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4 {
+    color: #ffffff;
+    font-family: Fraunces, Georgia, serif;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.blog-prose h1 {
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+}
+
+.blog-prose h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+.blog-prose h3 {
+    font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.blog-prose p,
+.blog-prose li,
+.blog-prose blockquote {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.blog-prose strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.blog-prose a {
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.28);
+    text-underline-offset: 0.18em;
+    transition: text-decoration-color 200ms ease;
+}
+
+.blog-prose a:hover {
+    text-decoration-color: rgba(255, 255, 255, 0.72);
+}
+
+.blog-prose ul,
+.blog-prose ol {
+    padding-left: 1.25rem;
+}
+
+.blog-prose ul {
+    list-style-type: disc;
+}
+
+.blog-prose ol {
+    list-style-type: decimal;
+}
+
+.blog-prose li + li {
+    margin-top: 0.45rem;
+}
+
+.blog-prose blockquote {
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    padding-left: 1rem;
+}
+
+.blog-prose :not(pre) > code {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-size: 0.92em;
+    padding: 0.18rem 0.4rem;
+}
+
+.blog-prose pre {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    background: #050505;
+    padding: 1rem 1.1rem;
+}
+
+.blog-prose pre code {
+    display: block;
+    min-width: max-content;
+    color: inherit;
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.blog-prose pre [data-line] {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.blog-prose pre .highlighted {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.55rem;
+}
+
+.blog-prose table {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+
+.blog-prose th,
+.blog-prose td {
+    min-width: 9rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+    vertical-align: top;
+}
+
+.blog-prose th {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+}
+
+.blog-prose hr {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.blog-prose img {
+    border-radius: 1rem;
+}
+
+@media (max-width: 640px) {
+    .blog-prose {
+        font-size: 0.98rem;
+        line-height: 1.75;
+    }
+
+    .blog-prose pre {
+        border-radius: 1rem;
+        padding: 0.9rem;
+    }
+}
+
+/* Side previews select a project; the centered preview opens it. */
+.coverflow-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: clamp(17rem, 39vw, 33rem);
+    perspective: 1200px;
+    overflow: hidden;
+    touch-action: pan-y;
+    isolation: isolate;
+}
+.coverflow-card {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 88%;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 14%);
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+    backface-visibility: hidden;
+    user-select: none;
+}
+.coverflow-card:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -4px;
+}
+.coverflow-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 52rem;
+    min-height: 12rem;
+    margin: 2rem auto 0;
+}
+.coverflow-arrow {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgb(255 255 255 / 25%);
+    border-radius: 50%;
+    transition: background-color 150ms;
+}
+.coverflow-arrow:hover { background-color: rgb(255 255 255 / 12%); }
+.coverflow-arrow:focus-visible { outline: 2px solid white; outline-offset: 4px; }
+@media (max-width: 639px) {
+    .coverflow-stage { height: 18rem; margin-inline: -1rem; }
+    .coverflow-card { width: 74%; height: 85%; }
+    .coverflow-details { flex-direction: column; gap: 1.5rem; min-height: 18rem; margin-top: 1.5rem; }
+}

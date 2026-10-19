@@ -1,0 +1,178 @@
+---
+title: "Why I Hate Raycast"
+date: "2026-08-12"
+description: "Raycast is polished, fast, and capable. My problem is that a launcher should not become a second operating system for my shortcuts, tools, and habits."
+slug: "why-i-hate-raycast"
+wordCount: 2620
+tags:
+  - raycast
+  - macos
+  - productivity
+  - opinion
+---
+
+Raycast is a very good app built around a premise I increasingly dislike.
+
+It is fast. It looks great. The keyboard navigation is excellent, and it has the kind of polish that makes other utilities feel unfinished. I understand why developers install it, replace Spotlight, and spend the next week telling everyone else they are using their Mac wrong.
+
+I also think it asks for way too much control over the way I use my computer.
+
+Raycast starts as an app launcher. Then it becomes a clipboard manager, window manager, text expander, calculator, note-taking app, script runner, extension host, calendar client, password-adjacent command center, and AI interface. It wants to be the first thing I open and the last thing I close.
+
+Raycast calls itself ["your shortcut to everything"](https://www.raycast.com/). That is supposed to be the pitch. For me, it is the problem.
+
+## A launcher should disappear
+
+The best launcher is almost invisible. Open the damn app I typed and get out of the way.
+
+I press a shortcut, type a few letters, open the app or file I wanted, and move on. I do not want to think about the launcher. I do not want to browse inside it, build a life inside it, or wonder which of its features could replace another app. Its job is to get out of the way.
+
+Raycast keeps expanding that interaction. Its own FAQ describes it as a [clipboard manager, text expander, window manager, and command palette](https://www.raycast.com/faq). It can search third-party services, create issues, control music, run scripts, manage windows, store notes, and perform actions without opening the apps those actions belong to.
+
+Each feature is defensible. Clipboard history is useful. Window shortcuts are useful. Snippets are useful. A command that lets me search GitHub without opening a browser can save time.
+
+The problem appears when all of those features share the same doorway.
+
+The shortcut that once opened a small utility becomes the control panel for everything. If Raycast changes its interface, breaks an extension, moves a command, alters a free limit, or decides that some new product should take a more prominent position, every workflow built around it feels the change.
+
+That is a ridiculous amount of power to give a launcher.
+
+## Convenience turns into dependency quietly
+
+Lock-in does not always begin with a contract or a file format. Sometimes it begins with muscle memory.
+
+One shortcut opens Raycast. Another triggers clipboard history. A third moves the current window. Then there are aliases for extensions, snippets for repeated text, quick links for websites, and custom commands for scripts. None of this feels like a major commitment while I am setting it up. It feels like removing friction.
+
+Six months later, the friction has not disappeared. It has moved, and now a bunch of shit I used to do without thinking depends on one app.
+
+Now my workflow depends on remembering Raycast's commands, keeping extensions working, syncing settings, and reproducing the same setup on another machine. A tool that was supposed to save a few seconds has become part of how I know how to operate the computer.
+
+This matters because shortcuts are unusually sticky. I can replace a notes app and learn a new interface. Replacing dozens of tiny actions spread across an entire day is harder. The cost is not exporting data. The cost is retraining my hands.
+
+Raycast makes that dependency pleasant enough that it is easy to miss. There is no dramatic moment when the product takes over. There is just one more useful command, followed by another.
+
+## The extension store does not solve the control problem
+
+Raycast's extension system is probably the strongest argument for the app.
+
+The public [extension repository](https://github.com/raycast/extensions) contains thousands of integrations. Developers can build extensions with React, TypeScript, and Node, inspect the source of store extensions, submit changes, and create private tools. Compared with a launcher that only knows how to open apps, Raycast is much more flexible.
+
+That flexibility is real, but it exists inside a boundary Raycast controls.
+
+I can inspect an extension, change it, or write my own. It still runs inside Raycast. The open part is the huge collection of plugins around the product, not the product at the center. Every extension depends on Raycast's API, user interface, permissions, update behavior, and decisions about what an extension is allowed to do.
+
+That is not unusual for a platform. VS Code extensions depend on VS Code. Browser extensions depend on browser APIs. The difference is the position Raycast wants to occupy. An editor plugin affects my editor. A Raycast extension can become the way I interact with GitHub, my calendar, my music, my smart home, my browser, and the operating system itself.
+
+The extension store makes the product feel modular while increasing the importance of the host. The more useful the extensions become, the harder Raycast is to remove.
+
+If an integration is important to me, I would rather have a script I can run from a shell, a shortcut I can call from multiple tools, or a small app with one clear job. Those pieces may be uglier. They are also easier to understand, back up, move, and replace.
+
+## The app becomes a productivity hobby
+
+Raycast is built for people who enjoy shaving seconds off repeated actions. I understand that instinct because I have it too.
+
+A task takes three clicks, so I look for a hotkey. The hotkey works, so I start looking for the next slow task. Soon I am changing aliases, comparing extensions, organizing snippets, and deciding whether a command deserves its own shortcut. I can spend twenty minutes improving an action I perform twice a week.
+
+The math is usually bullshit. The activity still feels productive because it is adjacent to real work and produces an immediate result. Pressing a new shortcut feels clean. The project I was avoiding remains exactly where I left it, except now I have built a beautiful little shortcut around not doing it.
+
+This is not entirely Raycast's fault. People turn editors, tiling window managers, shells, and note-taking apps into configuration hobbies too. Raycast simply puts more categories of optimization in one place. There is always another extension to install and another ordinary interaction to convert into a command.
+
+The product encourages a specific picture of productivity: fewer visible apps, fewer clicks, more actions passing through one keyboard-driven interface. That can be faster. It can also confuse motion with progress.
+
+Opening a GitHub issue three seconds faster does not matter if I spend the next ten minutes adjusting the command that opened it. A tool should reduce the amount of attention it needs. Raycast is so configurable that it can easily become something I maintain.
+
+I do not want to be good at using my launcher. I want to be good at the work I launched.
+
+## AI changes what the product is
+
+Raycast did not stop at utilities. AI is now a major part of the product, with chat, multiple models, quick commands, extensions that can take actions, personalization, and memory.
+
+This is a logical business decision. A launcher is hard to sell as a subscription forever. AI usage has an ongoing cost, changes constantly, and gives Raycast a reason to offer paid plans. The [Pro plan](https://manual.raycast.com/billing) bundles Raycast AI with cloud sync, longer histories, custom themes, and other upgrades, while an additional plan provides access to more capable models.
+
+It also pushes Raycast further away from being quiet infrastructure.
+
+I do not need another damn AI surface attached to the tool I use to open Calculator. I do not want every blank input box to wonder whether it should search my Mac, run a command, call an extension, or start a conversation with a model. These are different actions with different costs and different privacy boundaries. Putting them behind one shortcut makes the interface look simpler while the system underneath becomes harder to reason about.
+
+The new AI extensions make that boundary even less clear. Raycast's documentation says they can let AI [take actions across installed extensions](https://manual.raycast.com/ai/ai-extensions), including tools that work with local data and connected apps. That may be useful. It also means the launcher is no longer just finding things. It is choosing tools and acting through them.
+
+For someone who wants an AI command center, this is probably the point. For me, it is scope creep wearing a nice interface.
+
+AI should appear when I deliberately open an AI tool. It should not become part of the default layer between me and the operating system simply because every software company apparently needs to shove AI into every available text box.
+
+## Privacy is not my easiest argument
+
+It would be convenient to claim that Raycast sends everything on the computer to a mysterious server. Its documentation does not support that claim.
+
+Raycast describes the app as local-first. It says AI interactions are not used to train models, synced data is encrypted at rest and in transit, and users can run local models through Ollama. Cloud sync is optional. Its [AI privacy documentation](https://manual.raycast.com/ai/raycast-ai-privacy-security) explains when data is sent for model processing, attachments, feedback, and synchronization.
+
+Those are good choices. They do not make every Raycast feature local, and they do not remove the need to understand what each connected extension does, but the privacy story is more serious than I expected from an AI-heavy productivity app.
+
+My complaint is not paranoid shit about Raycast secretly stealing every keystroke. My complaint is that centralizing so many actions creates a larger trust decision.
+
+A basic launcher needs permission to find apps and files. A launcher with clipboard history sees copied text. Calendar integrations need calendar access. Extensions connect to third-party accounts. AI features send selected context for processing unless a local model is used. Cloud sync stores supported data so it can appear on other devices.
+
+These permissions may all be reasonable for their features. The total still matters.
+
+When separate tools handle separate jobs, I can make separate decisions about them. I can use a local clipboard manager without connecting it to an AI service. I can run a window manager that never sees my calendar. I can replace one component without reconsidering the rest of the system.
+
+Raycast's value comes from bringing those pieces together. That convenience and that concentration are the same thing viewed from opposite sides.
+
+## Platform lock-in matters more than export
+
+Keyboard workflows become muscle memory, which makes platform support more important than it looks.
+
+Raycast began as a Mac app and now has a Windows beta, but its FAQ says there are [no plans for a Linux version](https://www.raycast.com/faq). A workflow built around Raycast therefore does not follow me everywhere. The more commands, snippets, extensions, and habits I put into it, the more noticeable that boundary becomes.
+
+I use tools across macOS and Linux. I prefer boring pieces that survive the move: shell scripts, Git repositories, plain-text configuration, browser bookmarks, and commands that do not care which launcher called them.
+
+Raycast can [export its settings and data](https://manual.raycast.com/import-export), including snippets, quick links, notes, extension settings, clipboard history, AI chats, and other configuration. That is useful for backups and moving between supported machines.
+
+Export is not portability, though. A Raycast configuration file is still a Raycast configuration file. It helps me restore the product; it does not help me leave the product.
+
+Plain text has a different kind of durability. A shell script can outlive the terminal that launches it. A Git repository can move between hosting services. A keyboard shortcut stored in an open configuration file can be mapped to a different tool. None of that is as polished as clicking Install in an extension store, but it gives me somewhere to go when the host stops fitting.
+
+I do not expect every app to support every operating system. I do care when an app encourages me to place operating-system-level habits inside a setup that cannot travel with me.
+
+## Spotlight kind of sucks, and that is fine
+
+Spotlight kind of sucks. Search results can be inconsistent, its priorities are not always obvious, and it lacks the extension system that makes Raycast attractive.
+
+It is also limited enough that I rarely think about it.
+
+I open an app, find a file, perform a calculation, or search the web. Then Spotlight disappears. I have never spent an afternoon configuring my Spotlight workflow. I have never worried that a calendar integration inside Spotlight might stop working. Its ceiling is low, but so is the amount of my life attached to it.
+
+There are other focused tools for the jobs Raycast collects. A window manager can manage windows. The shell can run scripts. The browser can hold quick links. A dedicated clipboard tool can expose a clear retention policy. None of these tools needs to become the front door to everything else.
+
+Using several utilities sounds less elegant than using one. I am fine with that. A computer is already a collection of programs. Pretending one command bar makes it a single coherent system does not remove the seams. It hides them behind Raycast.
+
+## Who Raycast is actually good for
+
+Raycast is not useless, and people who love it are not falling for a scam.
+
+If someone works almost entirely on a Mac, likes keyboard-driven interfaces, uses several services with good Raycast extensions, and does not mind keeping those workflows inside one product, Raycast can remove a lot of daily friction. The free plan includes enough core features to make the app useful without paying, and the extension ecosystem solves tasks that Spotlight never will.
+
+Teams can also build private extensions and give internal tools a shared interface. That is a real use case. A consistent command palette can be better than sending people through five internal dashboards with five unrelated designs.
+
+Even then, I would be careful about which habits belong in the launcher. Launching apps is cheap to move. A pile of custom extensions, cloud-synced snippets, AI commands, and service integrations is not.
+
+The question is not whether Raycast saves time today. It probably does. The question is how much of the computer I want to experience through one company's product tomorrow.
+
+My answer is: much less than Raycast wants.
+
+## The polish is what makes it dangerous
+
+Most overstuffed apps are easy to reject. They are slow, ugly, confusing, or obviously desperate to keep me inside them. Raycast is harder to reject because it is so well made.
+
+The animations are quick. The interface is consistent. New features arrive in a form that already feels familiar. Installing an extension takes seconds. The product rarely announces that it is becoming a central dependency; it just keeps offering to remove another small annoyance.
+
+That is why “hate” is the word in the title, even though I respect the software.
+
+I hate the idea that every part of using a computer should be pulled into one command bar. I hate that a launcher can become a subscription, an extension platform, a sync service, and an AI client without ever giving up the friendly image of a faster Spotlight. I hate how easy it is to confuse a smoother route through the tools with better work. The whole thing pisses me off precisely because it works so well.
+
+Mostly, I hate that Raycast makes handing over that much control feel reasonable.
+
+I would rather see the seams. I want the launcher to launch, the shell to run scripts, the window manager to move windows, and AI to appear when I ask for it. Separate tools can fail separately. They can also be replaced separately.
+
+Raycast wants to be my shortcut to everything.
+
+I do not want everything to have the same shortcut.

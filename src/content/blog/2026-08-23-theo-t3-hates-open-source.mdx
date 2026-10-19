@@ -1,0 +1,123 @@
+---
+title: "Theo (t3) Hates Open Source"
+date: "2026-08-23"
+description: "Theo likes publishing source code. He hates the public development, shared history, and loss of control that make open source meaningfully open."
+slug: "theo-t3-hates-open-source"
+wordCount: 1453
+tags:
+  - open-source
+  - git
+  - github
+  - development
+  - opinion
+---
+
+Theo Browne hates open source.
+
+He likes source code that becomes public after the owner decides it is safe, finished, and useful. That is not the same thing.
+
+In [“I don't have time to build these things, will you?”](https://www.youtube.com/watch?v=wEAb0x3wTRc&t=973s), Theo argues that open source should not require all of a project's code to be public all of the time. He wants private files inside public repositories, private branches, hidden pull requests, delayed disclosure, and monorepos where only selected packages are visible.
+
+In other words, he wants the benefits of open source without the part where development is actually open.
+
+## He wants published source, not open development
+
+There is a legal definition of open source, and it mostly concerns the license attached to released code. A company can build a product completely in private, publish the source later under a real open-source license, and satisfy that definition.
+
+Theo's argument is not about licenses. It is about how the work happens.
+
+Public branches, visible pull requests, ugly experiments, abandoned ideas, and complete history are not accidental garbage attached to open source. They are how people outside the company see where a project is going. They let contributors review decisions before they become permanent. They let users notice that a promised feature died or that a replacement is being built behind the current one.
+
+Theo sees that visibility as a problem because people might misunderstand unfinished work or get annoyed when something never ships.
+
+That is open source. People can see the work, form opinions about it, and sometimes become inconvenient.
+
+What he wants is a release process where the owner chooses the exact moment outsiders are allowed to know something exists. The source becomes public after the uncertainty has been removed and the story is easier to control.
+
+That is closed development with an eventual source dump.
+
+## Messy history is part of the value
+
+Theo wants unfinished branches hidden because many experiments never ship. I understand why a company would prefer that. A clean repository makes the team look decisive. Nobody asks why a feature disappeared. Nobody builds expectations around a prototype.
+
+The mess is useful precisely because it was not curated for an audience.
+
+A failed implementation can explain why the final architecture looks strange. An abandoned pull request can show that a requested feature was considered and rejected for a real technical reason. A public roadmap change tells users that the project is moving away from something they depend on before the release lands on their machine.
+
+Selective disclosure turns history into marketing. The company publishes the branch that worked and hides the five that reveal uncertainty, disagreement, or a direction users would have challenged.
+
+That does not make the released source fake. It makes the development process opaque.
+
+Open-source maintainers do not owe strangers a livestream of every keystroke. Local branches can stay local. Private discussions can happen. Embargoed security work is necessary. But redesigning source control around hiding normal work is not a narrow exception. It changes public development from the default into something the owner grants when convenient.
+
+## The `.env` argument is a category error
+
+Theo asks why an `.env` file cannot live in a repository while remaining visible only to selected people.
+
+Because secrets are not source code.
+
+An API key has a different lifecycle from the program that reads it. It needs rotation, expiration, audit logs, environment-specific access, and immediate revocation when somebody leaves. A Git commit is designed to be copied, cached, branched, merged, and preserved. Those are excellent properties for source code and terrible properties for a production credential.
+
+Secret managers exist because permissions are not the only problem. A developer may need the staging token but not production. A deployment needs a credential without giving it to every person who can read the code. A key may need to rotate without creating a meaningless source commit. None of that becomes clean because the secret is an encrypted object inside a Git-like graph.
+
+Putting secrets next to source and trusting path-level permissions would make one access-control bug catastrophic. A public clone that accidentally includes a private code file is bad. A public clone that includes production credentials is an incident.
+
+Git telling developers not to commit `.env` files is not proof that Git failed. It is one of the few boundaries the industry got right.
+
+## Private files make collaboration dishonest
+
+A public repository is understandable because everyone can inspect the same graph. Commit hashes refer to the same contents. Reviewers can check the same diff. A fork starts from the same tree.
+
+Now add private files.
+
+Two people can check out what appears to be the same commit and receive different code. A public build may depend on a package the public cannot inspect. A pull request can pass tests against hidden files that outside contributors do not have. A maintainer can explain a decision using context nobody else is allowed to read.
+
+The repository still looks public, but the public version is only a projection of the real project.
+
+That model gives the owner an enormous advantage in every disagreement. When an outsider reports that the public source cannot reproduce the shipped product, the answer can always be that some internal component was not meant to be visible. When history does not explain a change, the missing reasoning may be in a private branch. When a fork behaves differently, perhaps it lacks a hidden package.
+
+At least a private repository is honest. It says you do not have access. A selectively public repository creates the appearance of shared access while every participant may be looking at a different product.
+
+## A monorepo is not entitled to be open source
+
+Theo also complains that projects must be split into multiple repositories when some packages can be public and others cannot.
+
+Good.
+
+If one package is community-owned and another contains proprietary business logic, that is a real governance boundary. The inconvenience of maintaining two repositories reflects a genuine difference in who can inspect, modify, redistribute, and make decisions about the code.
+
+Hiding both inside one monorepo does not remove the boundary. It makes the boundary easier for the company and harder for everybody outside it to understand.
+
+Companies choose monorepos because they simplify internal refactors, atomic changes, dependency management, and shared tooling. Those are company benefits. Open-source contributors should not get a partially erased view of the repository just so the internal team can keep its preferred layout.
+
+Sometimes splitting the code is annoying because the product is not actually separable. That may mean the supposedly open component is too dependent on private infrastructure to be a useful open-source project. The tooling should expose that fact, not hide it.
+
+## Security fixes are the exception, not the model
+
+Theo has one strong example: a security fix cannot always be public before the patched release exists. Publishing it early can hand attackers an exploit.
+
+That is true, and existing open-source projects already use private forks, security advisories, embargoed mailing lists, and coordinated disclosure for exactly that reason.
+
+The secrecy is narrow, temporary, and tied to a concrete threat. After the release, the patch and its useful history can become public.
+
+Using that exception to justify private everyday branches is like using password reset tokens to argue that every user profile should be secret. The mechanism may look similar. The reason is completely different.
+
+A serious alternative to GitHub should make coordinated security work better. It does not need to turn every maintainer's unfinished feature into a classified document.
+
+## Theo hates the loss of control
+
+This is the real disagreement.
+
+Open source gives up control. Other people can see the code before the author is ready to defend it. They can fork an abandoned direction, criticize a decision in public, preserve deleted history, or notice that the roadmap changed. They can use the project in ways its creator does not like.
+
+Theo wants the owner to decide which code, history, branches, and discussions each person is allowed to see. He wants openness to be a filtered view controlled from the center.
+
+That may be a better model for a company building a commercial product. It may convince more companies to publish useful pieces of code. I would rather have a genuinely licensed source release than another completely closed binary.
+
+It is still not the open-source culture Theo is pretending to improve.
+
+He wants open-source distribution with closed-source development. He wants transparency after the risky decisions are over. He wants outside contributors to see the project, but only through the windows the owner opens for them.
+
+Theo does not hate source code being available.
+
+He hates what happens when “open” stops being his decision alone.

@@ -1,0 +1,103 @@
+---
+title: "VPNs Are Overrated, But Still Useful"
+date: "2026-06-24"
+description: "A VPN hides traffic from the local network and changes the IP address websites see. It does not make you anonymous or stop account and browser tracking."
+slug: "vpns-overrated-but-useful"
+wordCount: 1506
+tags:
+  - privacy
+  - vpn
+  - networking
+  - opinion
+---
+
+VPN advertising tends to bundle privacy, encryption, anonymity, and security into one product. A tunnel can help with some of those things, but it cannot provide all of them.
+
+I use a VPN and think it is worth having. I also think people take bigger risks when they assume the VPN has made them anonymous. It has only hidden their traffic from a few specific observers.
+
+## What a VPN does
+
+A VPN creates an encrypted tunnel between your device and a server somewhere else. Your traffic goes through that tunnel and enters the internet from the VPN server's IP address instead of yours.
+
+Claims about logging, identity protection, and additional security sit on top of that basic function and depend on the provider and configuration.
+
+The concrete effects of that tunnel:
+
+1. **Your ISP can't see your traffic.** They see encrypted bytes going to one server. They don't know which websites you're visiting.
+2. **Websites see the VPN's IP, not yours.** Your approximate location changes to wherever the VPN server is.
+3. **Traffic on public Wi-Fi is encrypted.** The coffee shop's router can't snoop your packets.
+
+Those effects are useful, but they leave several common privacy problems untouched.
+
+## What it does not do
+
+**It does not make you anonymous.** The VPN provider sees everything your ISP would have seen. You've moved trust, not eliminated it. If the VPN logs your activity — and many "no-logs" providers have been caught lying about this — you've made things worse, not better. You've concentrated all your browsing history in one company that specifically exists to handle VPN traffic.
+
+**It does not stop Google, Facebook, or Amazon from tracking you.** You're logged in. They know who you are regardless of your IP address. A VPN doesn't change your cookies, your browser fingerprint, your logged-in session, your account ID. Google knows it's you the moment you open Gmail, VPN or not. Changing your IP is like changing your shirt — the face is the same.
+
+**It does not protect you from malware or phishing.** A VPN encrypts your traffic in transit. It doesn't inspect that traffic for malicious content. Click a bad link, download a bad file, enter your password on a fake site — the VPN faithfully encrypts all of it and delivers it to the attacker. "Encrypted" and "safe" are not the same thing.
+
+**It does not hide your DNS queries (unless configured to).** Many VPNs leak DNS — the lookups that resolve domain names to IPs — through your system's default resolver. Your ISP can't see the page content, but they can see that you asked "what's the IP for somesite.com?" That's often enough to know what you're doing. Check your VPN for DNS leak protection. Test it. Don't assume.
+
+**It does not prevent browser fingerprinting.** Your browser leaks hundreds of signals: screen resolution, fonts, extensions, canvas rendering quirks, WebGL version. These combine into a fingerprint that's often unique to you. A VPN changes your IP; it doesn't change your fingerprint. A tracking script can identify you across IP changes if you're using the same browser.
+
+**It does not help if the endpoint is compromised.** If the website you're talking to is breached, your data is stolen at the destination. The VPN encrypted the journey, not the destination. The breach has your data regardless of how it arrived.
+
+## The "no-logs" lie
+
+Every VPN claims "no logs." Some mean it. Some don't. The problem is you can't verify it. "Trust us, we don't log" is the entire privacy model, and the VPN industry has a history of proving that trust wrong:
+
+- Providers caught handing logs to law enforcement after claiming they kept none.
+- Providers using third-party analytics that effectively reconstruct your browsing history.
+- Providers acquired by companies with different privacy practices, quietly changing the deal.
+- "No-logs" claims that were technically true (they didn't log your traffic) but misleading (they logged payment info, account IDs, and connection timestamps that link to you).
+
+The providers I'd trust more than others: **Mullvad** (no accounts, cash payment, independently audited), **ProtonVPN** (Swiss jurisdiction, audited, same company as Proton Mail), **IVPN** (audited, transparent about limitations). None of these are perfect. All of them are better than the ones running YouTube ads with animated padlock animations.
+
+If you're paranoid enough: self-host WireGuard on a VPS. Now you're the VPN provider. The VPS host can still see your traffic, but you've eliminated the VPN-company-as-middleman layer. The trust shifts to whoever hosts your VPS — pick one you're comfortable with.
+
+## Where a VPN is useful
+
+Despite all of the above, I use one daily. Here's where they actually earn their keep:
+
+**1. Hiding traffic from your ISP.** If you don't trust your ISP — and in most countries you shouldn't — a VPN prevents them from building a profile of your browsing. This is the #1 legitimate use. Encrypted DNS helps too, but a VPN is more comprehensive because it hides all traffic, not just DNS.
+
+**2. Public Wi-Fi.** The coffee shop's Wi-Fi is an unencrypted network. Anyone on it can see what you're doing unless your traffic is encrypted. A VPN encrypts it. This is the one scenario where "military-grade encryption" marketing is actually accurate — you genuinely need encryption, and the VPN provides it.
+
+**3. Geo-restrictions.** Content that's locked to a country. Prices that change by region. Services that aren't available where you live. A VPN changes your apparent location. This is a convenience feature, not a privacy one — but it's real and it works.
+
+**4. Bypassing ISP throttling.** Some ISPs throttle specific traffic (torrents, video, gaming). If everything looks like encrypted VPN traffic, they can't selectively slow you down. This is anecdotal and varies by ISP, but it's a real effect for some people.
+
+**5. Self-hosted access.** If you run a homelab, a VPN (especially WireGuard or Tailscale) lets you reach your internal services without exposing them to the internet. This is a completely different use case — site-to-site or remote access — but it's one of the best reasons to run your own VPN.
+
+## When it is mostly theater
+
+**"I have a VPN so I'm private."** No. You have one tool that addresses one vector. Your browser fingerprint, your logged-in sessions, your phone's GPS, your email metadata — none of that is touched. A VPN is one layer in a stack, not the stack itself.
+
+**"The VPN makes me anonymous on torrent sites."** It hides your IP from peers in the swarm. It doesn't hide your activity from the VPN provider. If the provider logs (or is compelled to log), you're not anonymous — you've just added a witness.
+
+**"I use a free VPN."** Free VPNs are the most dangerous category. If you're not paying, the company is monetizing you somehow — selling bandwidth, injecting ads, logging traffic for third parties, or using your device as an exit node for other users' traffic. Hola VPN literally sold users' bandwidth as a botnet. This is not a hypothetical. Pay for your VPN or self-host it. Free VPNs are worse than no VPN.
+
+**"The VPN protects me from hackers."** A VPN is not a firewall. It's not antivirus. It doesn't block inbound attacks, scan for malware, or prevent you from clicking bad links. If someone tells you a VPN "protects you from hackers," they're selling you something, not informing you.
+
+## The setup I actually trust
+
+A VPN is one piece. Here's where it fits:
+
+| Concern | Tool | Does a VPN help? |
+| --- | --- | --- |
+| ISP sees your browsing | VPN or encrypted DNS | Yes — VPN is the comprehensive fix |
+| Websites track you | uBlock Origin, browser hardening, container tabs | No — you're logged in |
+| Browser fingerprinting | Firefox hardened, or Tor Browser for high-stakes | No — VPN doesn't change fingerprint |
+| Malware and phishing | Common sense, ad blocker, email filtering | No — VPN doesn't inspect content |
+| Public Wi-Fi snooping | VPN | Yes — this is the clearest win |
+| Password reuse | Password manager | No — unrelated |
+| Cross-site tracking via cookies | Browser containers, regular cookie clearing | No — VPN doesn't touch cookies |
+| Geo-restrictions | VPN | Yes — this is a convenience win |
+| Accessing your homelab remotely | WireGuard / Tailscale | Yes — but self-hosted, not commercial |
+
+## My take
+
+I use a VPN for public Wi-Fi, to keep browsing away from my ISP, and to reach services on my homelab. I do not expect it to hide activity tied to my accounts or browser.
+
+For a commercial VPN, I would pay for a provider with independent audits and a business model I understand. For remote access to my own network, I would use WireGuard or Tailscale. I would avoid free VPNs because I do not know how they are paying for the service or what they are collecting in return.

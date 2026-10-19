@@ -1,0 +1,18 @@
+{
+  "name": "Charlie H",
+  "short_name": "Charlie",
+  "description": "Portfolio, projects, and writing from Charlie H.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#020202",
+  "theme_color": "#020202",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

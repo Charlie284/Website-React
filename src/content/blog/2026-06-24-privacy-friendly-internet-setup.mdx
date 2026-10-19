@@ -1,0 +1,154 @@
+---
+title: "How I Would Build a Privacy-Friendly Internet Setup"
+date: "2026-06-24"
+description: "Browser, DNS, VPN, password manager, email, Linux, phone — a practical stack for people who want to stop bleeding data without becoming a hermit."
+slug: "privacy-friendly-internet-setup"
+wordCount: 1793
+tags:
+  - privacy
+  - linux
+  - self-hosting
+  - infrastructure
+  - opinion
+---
+
+This isn't a "delete all your accounts and move to a cabin" guide. It's a practical stack — browser, DNS, VPN, passwords, email, OS, phone — that blocks the worst surveillance without making your daily life harder. Everything here is something I actually use or have tested on my homelab.
+
+You don't have to do all of it. Start with the change that is easiest to maintain, then add another if it solves a problem you actually have.
+
+## Browser: Firefox + uBlock Origin
+
+Chrome is made by an ad company. That's not a hot take — it's Google's business model. Every page you load in Chrome is an opportunity for Google to learn something about you, even in incognito mode (which, despite the name, shares plenty with Google).
+
+**What I'd run:**
+
+- **Firefox** as the daily browser. It's the only major browser not built by an ad company or an ecosystem vendor. Mozilla has real privacy issues (telemetry, Pocket) but they're configurable and the engine isn't trying to sell you ads.
+- **uBlock Origin** — not the "lite" version, not "AdBlock Plus" (which has an acceptable-ads whitelist that's basically paid by advertisers). uBlock Origin. It blocks ads, trackers, and malicious domains at the network level inside the browser.
+- **Hardening:** disable telemetry in `about:config`, clear cookies on close, set `network.dns.disablePrefetch = true`. There are good templates for this — look up "arkenfox user.js" if you want a pre-made config.
+
+**For the moments you need Chromium:** use Ungoogled Chromium or Brave. Both strip Google's phone-home behavior. Brave's crypto stuff is annoying but its privacy defaults are genuinely good.
+
+**What I wouldn't bother with:** Tor Browser for daily use. It's too slow for normal browsing and using it for logged-in sessions (email, banking) defeats the purpose. Tor is for specific moments, not your daily driver.
+
+## DNS: stop handing your browsing history to your ISP
+
+When you type a URL, your computer asks a DNS server "what's the IP for this domain?" By default, that's your ISP's DNS server. Which means your ISP sees every website you visit. In many countries they're required to log it.
+
+**What I'd run:**
+
+- **Quad9** (`9.9.9.9`) — free, no logging, blocks malicious domains. Non-profit.
+- **Cloudflare** (`1.1.1.1`) — faster, claims no logging, but Cloudflare is a massive intermediary that already sees a huge chunk of internet traffic. I trust them more than Comcast, less than Quad9.
+- **Encrypted DNS** — set up DNS-over-HTTPS (DoH) or DNS-over-TLS (DoT) so your ISP can't see the queries even if they're the resolver. Firefox has DoH built in. For system-wide, use `dnscrypt-proxy` or configure it in your router.
+
+**If you self-host:** run Pi-hole or AdGuard Home on your homelab. It blocks ads and trackers at the network level for every device on your Wi-Fi — phones, TVs, guests — without installing anything on them. This is one of the highest-impact things you can do. My entire network runs through a Pi-hole and it blocks ~20% of all DNS queries on a typical day. That's 20% fewer trackers.
+
+## VPN: know what you are buying
+
+A VPN does **one thing**: it moves the point where your traffic enters the internet from your ISP to the VPN provider. That's it. It doesn't make you anonymous. It doesn't stop tracking by the websites you visit. It doesn't protect you from malware.
+
+**What a VPN is good for:**
+
+- Hiding your browsing from your ISP (if you don't trust them and encrypted DNS isn't enough)
+- Bypassing geo-restrictions
+- Using public Wi-Fi without exposing traffic to the coffee shop's router
+
+**What a VPN is NOT good for:**
+
+- "Anonymity" — the VPN provider sees everything your ISP would have seen
+- Stopping Google/Facebook tracking — you're logged in, they know who you are regardless of IP
+- "Security" — a VPN doesn't protect you from phishing, malware, or bad passwords
+
+**What I'd run:** Mullvad. No accounts (you get a random number), cash payment option, no logs, audited. €5/month. If you want to self-host, WireGuard on your own VPS or homelab is excellent — but understand that you're now your own VPN provider and the trust model shifts to whoever hosts your VPS.
+
+**What I wouldn't do:** use a free VPN. If you're not paying, you're the product. The "free VPN" market is full of malware and data-selling operations.
+
+## Password manager: stop reusing passwords
+
+If you do one thing on this list, do this. Password reuse is how one breach becomes ten. Someone leaks a database from a forum you used in 2019, they try the same email+password combo on your email, your bank, your cloud account. It works because you used the same password everywhere.
+
+**What I'd run:**
+
+- **Bitwarden** (or self-hosted **Vaultwarden**) — open source, audited, free tier covers everything you need. Self-hosting Vaultwarden on your homelab means your password vault never touches a third-party server.
+- **KeePassXC** if you want zero cloud at all — local database file, you sync it yourself. Maximum control, more friction.
+
+**What I wouldn't run:** LastPass. They've had breaches, their security practices have been questioned, and they charge for things Bitwarden gives away. 1Password is fine but closed source.
+
+**The setup that actually works:**
+
+1. Generate a strong master password (4+ random words, not a string of symbols you'll forget)
+2. Let the manager generate every other password — never type one yourself again
+3. Turn on 2FA on the manager (app-based, not SMS)
+4. Spend an afternoon logging in to every account and replacing reused passwords
+5. Never look back
+
+## Email: accept the tradeoff
+
+Email is fundamentally not private. It's a postcard, not a letter. Every relay can read it, and most providers scan metadata at minimum. True encrypted email (Proton, Tuta) exists but comes with friction — PGP compatibility, no standard IMAP, search doesn't work the way you expect.
+
+**What I'd run:**
+
+- **Proton Mail** for anything sensitive — banking, accounts, personal correspondence. Free tier is fine. The zero-access encryption means Proton can't read your stored mail even if compelled.
+- **A self-hosted mail server** if you're willing to maintain it — but email self-hosting is genuinely hard. SPF, DKIM, DMARC, IP reputation, deliverability fights with Gmail. I've tried it. It's a part-time job. Most people shouldn't.
+- **Keep a burner Gmail** for accounts you don't care about — forums, newsletters, sign-up forms that demand an email. Quarantine the junk.
+
+**What I wouldn't do:** rely on Gmail for anything you'd rather Google not see. They scan metadata. "No humans read your email" is not the same as "no system processes your email."
+
+## Linux: the foundation
+
+If you're on Windows, your OS is phoning home constantly — telemetry, search queries, usage data, ad IDs. Windows 11 made this worse, not better. You can disable some of it, but you're always playing whack-a-mole.
+
+**What I'd run:**
+
+- **Ubuntu** or **Linux Mint** if you're new — they work out of the box, huge community, every question is already answered on a forum.
+- **Fedora** if you want something more cutting-edge but still stable. Good middle ground.
+- **Arch** if you want to understand every component of your system and don't mind spending a weekend installing it. Not for beginners, but you'll learn more about Linux in two days of Arch installation than in a month of Ubuntu.
+
+**The privacy wins that come for free with Linux:**
+
+- No telemetry by default (Ubuntu has some, but it's opt-in and minimal vs Windows)
+- No ad integration in the file manager, start menu, or lock screen
+- No forced updates that change your settings
+- Full disk encryption as a first-class setup option
+- You control what runs, what starts, what connects to the internet
+
+I wrote a whole post about why I use Linux — the short version is that it's the only major OS that treats you as the owner of your machine, not a tenant.
+
+## Phone: the hardest problem
+
+Your phone is the worst privacy device you own. It has a GPS, a microphone, a camera, an accelerometer, and a persistent connection to a cell tower that knows your location within 50 meters at all times. Both iOS and Android are built by companies whose business involves knowing where you are and what you're doing.
+
+**Realistic Android setup:**
+
+- **GrapheneOS** if you have a Pixel — it's a de-Googled Android that runs without Google Play Services. You can sandbox apps, revoke permissions aggressively, and run open-source alternatives. This is the best privacy option that's still a normal phone.
+- **CalyxOS** as an alternative if GrapheneOS is too strict — it includes microG for apps that refuse to work without Google services.
+- **F-Droid** for apps instead of the Play Store — open-source, no tracking, no ads in the store itself.
+- **Aurora Store** if you need Play Store apps without a Google account.
+
+**Realistic iOS setup:**
+
+- Turn off everything in Privacy & Security that you can: ad tracking, analytics, significant locations, ad personalization
+- Use Safari with the built-in privacy report, or Firefox
+- Use a content blocker like 1Blocker
+- Accept that you're trusting Apple, who is better than Google on privacy but still a closed ecosystem that decides what you can run
+
+**What I wouldn't do:** carry two phones. It sounds cool until you do it for a week. Get one phone, set it up as privately as you can stand, and accept the residual leakage.
+
+## The stack at a glance
+
+| Layer | What I'd run | Why |
+| --- | --- | --- |
+| Browser | Firefox + uBlock Origin | Not built by an ad company |
+| DNS | Quad9 + Pi-hole (self-hosted) | Blocks trackers network-wide |
+| VPN | Mullvad or self-hosted WireGuard | Hides traffic from ISP |
+| Passwords | Bitwarden / Vaultwarden (self-hosted) | Open source, audited |
+| Email | Proton Mail + burner Gmail | Encrypted for sensitive, junk for the rest |
+| OS | Linux (Ubuntu / Fedora / Arch) | No telemetry, full control |
+| Phone | GrapheneOS or hardened iOS | Best available option, not perfect |
+
+## The compromise
+
+You cannot be completely private on the internet. Every setup still depends on an ISP, hardware, software, and services run by somebody else. My goal is to reduce how much data I give away without turning privacy into a second job.
+
+Each useful layer removes one source of unnecessary tracking. Pick the ones that fit your routine and configure them properly. A complicated setup that you eventually disable is not helping you.
+
+If you reuse passwords, start with the password manager. It is the change on this list that I would make first.

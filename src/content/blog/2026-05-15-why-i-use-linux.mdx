@@ -1,0 +1,44 @@
+---
+title: "Why I Use Linux"
+date: "2026-05-15"
+description: "I started using Linux on a home server, then moved my laptop over when I realized I wanted the same tools and workflow on both machines."
+slug: "why-i-use-linux"
+wordCount: 451
+tags:
+  - linux
+  - open-source
+  - development
+  - self-hosting
+---
+
+I first used Linux seriously on my server, not my laptop.
+
+## It started with a server
+
+I began with **Ubuntu Server** because I wanted to self‑host services and actually see how the internet runs on Linux.  Setting up Docker containers, tweaking services, fixing permissions, and SSH‑ing everywhere forced me to read man pages and understand what was happening under the hood.  The early days were confusing — cryptic commands, scary config files, and errors that made no sense — but every problem taught me how computers truly work.
+
+## Then I put Linux on my laptop
+
+When I finally bought a new laptop, moving it to Linux felt natural.  I was already spending hours on a Linux server, so the laptop became just another machine in the same ecosystem.  The same shell, the same Git workflow, and the same Docker images now lived on my daily workstation.
+
+## The gaming trade-off
+
+The biggest pain point was gaming.  Switching meant losing native support for titles like **Valorant**, **Rainbow Six Siege**, and **Forza** — games that rely on Windows‑only anti‑cheat layers.  While many games now run via Proton, those few titles remain unavailable, forcing a concrete cost‑benefit calculation.
+
+## Control is the point
+
+Linux gives me full control over *what* runs on my machine. I can pick a desktop environment, strip out unwanted services, and script anything from server deployments to local builds.  The whole stack — Git, Docker, Node, Python, Rust, SSH — just works together natively.
+
+Open‑source matters, too.  Even when I’m not digging into the kernel, I like knowing the OS isn’t a black box.  The community‑driven development model means bugs are fixed publicly, patches are shared, and I can contribute if I want.
+
+## The skills carry over
+
+Anything I fix on my laptop translates directly to my server.  A Docker permission error? I already know the `chmod`/`chown` dance.  A port binding issue? I check `ss -tuln` or my firewall rules.  This cross‑machine consistency dramatically speeds up debugging and deepens my understanding of the whole stack.
+
+## Customisation that helps me work
+
+I don’t customise just to make things look pretty. I pick a tiling window manager, map keys for my most‑used commands, and script the launch of my development environment.  The result is a workspace that *matches* how I think and work, not the other way around.
+
+## Why I stayed
+
+Linux isn’t perfect. Some hardware still needs proprietary drivers, a few apps and games remain Windows‑only, and setup can take more work. I stayed because my laptop now feels like an extension of the server I built. The same commands, containers, and troubleshooting habits work on both, and I can change the parts that get in my way.

@@ -198,6 +198,15 @@ for (const route of routes) {
   }
 }
 
+// Client-side visits may cache route chunks without fetching their HTML.
+// An empty root uses the normal client render path instead of hydrating a 404.
+await writeFile(path.join(distDir, "offline.html"), renderMetadata(template, {
+  path: "/offline",
+  title: "Offline — Charlie H",
+  description: "Previously visited pages may be available while you are offline.",
+  noIndex: true,
+}), "utf8");
+
 const notFound = setRenderedContent(renderMetadata(template, {
   path: "/404",
   title: "Page Not Found — Charlie H",
@@ -225,4 +234,4 @@ await Promise.all([
   rm(path.join(rootDir, ".prerender"), { force: true, recursive: true }),
 ]);
 
-console.log(`Generated metadata for ${routes.length} routes plus sitemap.xml and 404.html.`);
+console.log(`Generated metadata for ${routes.length} routes plus sitemap.xml, offline.html, and 404.html.`);

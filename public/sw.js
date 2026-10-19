@@ -68,7 +68,7 @@ self.addEventListener("fetch", (event) => {
             ? [request, "/", "/index.html"]
             : [request, pathname, `${pathname}.html`, `${pathname}/index.html`];
 
-          return await matchCache([...candidates, "/404.html", "/"], { ignoreSearch: true }) ||
+          return await matchCache([...candidates, "/offline.html"], { ignoreSearch: true }) ||
             Response.error();
         }
       })(),
